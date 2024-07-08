@@ -1,0 +1,58 @@
+@font-face {
+  font-family: Nunito;
+  src: url('./Nunito-Regular.ttf');
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: Nunito, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #212529;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background-color: #dc3545;
+}
+
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px #212529;
+  border-radius: 10px;
+  background-color: #212529;
+}
+
+.form-control::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white !important;
+  opacity: 1; /* Firefox */
+}
+
+.form-control:-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: white !important;
+}
+
+.form-control::-ms-input-placeholder {
+  /* Microsoft Edge */
+  color: white !important;
+}
+
+.h250 {
+  height: 250px;
+}
+
+.actorsImage {
+  width: 120px;
+  object-fit: cover;
+  height: 180px;
+}

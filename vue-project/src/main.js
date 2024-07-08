@@ -7,10 +7,12 @@ import 'bootstrap-vue-next/dist/bootstrap-vue-next.css'
 import App from './App.vue'
 import router from './router'
 
-const app = createApp(App)
-
-app
+createApp(App)
   .use(createPinia())
   .use(router)
   .use(createBootstrap({ plugins: { modalController: true } }))
   .mount('#app')
+
+// Шрифт
+// сделать страницу 404
+// Иконки для навигации

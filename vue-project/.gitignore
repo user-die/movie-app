@@ -28,3 +28,15 @@ coverage
 *.sw?
 
 *.tsbuildinfo
+
+
+/src/components/FilmsList.vue
+/src/views/ActorProfile
+/src/views/FilmProfile
+/src/views/Actors.vue
+/src/views/Favorite.vue
+/src/views/Films.vue
+/src/views/Home.vue
+/src/views/Search.vue
+/src/views/Serials.vue
+/src/views/Wishlist.vue

@@ -1,0 +1,77 @@
+<template>
+  <article class="d-grid flex-column justify-content-between align-items-start">
+    <div>
+      <div class="d-flex align-items-center gap-5">
+        <h1 class="mb-0">{{ actor.name }}</h1>
+        <WishlistButton
+          :id="props.actor.id"
+          text="Любимая звезда"
+          list="FavoriteActors"
+          :type="3"
+        />
+      </div>
+
+      <p class="fs-5 text-secondary mb-3">{{ actor.enName }}</p>
+    </div>
+
+    <article class="d-flex gap-3 mt-3">
+      <article class="text-secondary">
+        <p>Возраст</p>
+        <p>Дата рождения</p>
+        <p>Место рождения</p>
+        <p>Всего фильмов</p>
+        <p>Рост</p>
+        <p>Количество наград</p>
+      </article>
+
+      <section>
+        <p>
+          {{ calculateAge(new Date(props.actor?.birthday)) }}
+          {{ pluralAge(calculateAge(new Date(props.actor?.birthday))) }}
+        </p>
+        <p>{{ new Date(props.actor?.birthday).toLocaleDateString('ru-RU', options) }}</p>
+        <p>
+          <span v-text="props.actor.birthPlace?.map((el) => el.value).join(', ')"></span>
+        </p>
+        <p>{{ actor.movies?.length }}</p>
+        <p>{{ actor.growth }} см</p>
+        <p>{{ actor.countAwards }}</p>
+      </section>
+    </article>
+  </article>
+</template>
+
+<script setup>
+import WishlistButton from '@/components/WishlistButton.vue'
+
+const props = defineProps({
+  actor: Object
+})
+
+var calculateAge = (birthday) => {
+  var ageDifMs = Date.now() - birthday.getTime()
+  var ageDate = new Date(ageDifMs)
+  return Math.abs(ageDate.getUTCFullYear() - 1970)
+}
+
+var pluralAge = (age) => {
+  var lastNumber = age.toString().at(-1)
+
+  switch (true) {
+    case lastNumber == 1:
+      return 'год'
+    case lastNumber > 1 && lastNumber <= 4:
+      return 'года'
+    default:
+      return 'лет'
+  }
+}
+
+const options = {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric'
+}
+</script>
+
+<style scoped></style>

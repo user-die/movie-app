@@ -32,9 +32,9 @@
               <p class="text-warning m-0">{{ item.rating?.kp.toFixed(1) }}</p>
             </section>
 
-            <WishlistButton :id="item.id" :list="'favorites'" />
+            <WishlistButton :id="item.id" :list="'favorites'" :type="2" />
 
-            <WishlistButton :id="item.id" :list="'wishlist'" :isFavorite="true" />
+            <WishlistButton :id="item.id" :list="'wishlist'" :type="1" />
           </article>
         </BCardText>
       </BCardBody>

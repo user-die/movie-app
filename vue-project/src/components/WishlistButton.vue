@@ -3,7 +3,8 @@
     @click="(event) => click(props.id, event)"
     :variant="(item && 'danger') || 'outline-danger'"
   >
-    {{ props.text }} <Bookmarks v-if="isFavorite" /> <BookmarksStar v-else />
+    {{ props.text }} <Bookmarks v-if="type === 1" /> <BookmarksStar v-if="type === 2" />
+    <Heart v-if="type === 3" />
   </BButton>
 </template>
 
@@ -12,6 +13,7 @@ import { BButton } from 'bootstrap-vue-next'
 import { onMounted, reactive, ref } from 'vue'
 import Bookmarks from '~icons/bi/bookmarks'
 import BookmarksStar from '~icons/bi/bookmark-star'
+import Heart from '~icons/bi/heart-fill'
 
 var wishlist = reactive({ data: [] })
 var item = ref(null)
@@ -44,7 +46,7 @@ const props = defineProps({
   id: Number,
   text: String,
   list: String,
-  isFavorite: Boolean
+  type: Number
 })
 
 onMounted(() => {

@@ -16,14 +16,14 @@
       </BButton>
     </div>
 
-    <article
-      class="ps-4 mb-2 overflow-hidden ps-4 m-0"
-      :style="{ maxHeight: factsToggle ? '250px' : '100%' }"
+    <ul
+      class="ps-4 mb-2 overflow-hidden m-0"
+      :style="{ maxHeight: factsToggle ? '250px' : '100%', listStyleType: 'none' }"
     >
-      <p v-for="fact in facts" :key="fact.value" class="mb-2">
+      <li v-for="fact in facts" :key="fact.value" class="mb-0 py-3 px-4 border-bottom">
         {{ fact.value.replace(/\&.*?;/g, '').replace(/\<.*?>/g, '') }}
-      </p>
-    </article>
+      </li>
+    </ul>
   </article>
 </template>
 

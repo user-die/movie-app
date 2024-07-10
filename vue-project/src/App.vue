@@ -1,9 +1,7 @@
 <template>
   <Navbar />
 
-  <div style="margin-left: 250px">
-    <router-view class="p-4" />
-  </div>
+  <router-view class="p-4" />
 </template>
 
 <script setup>

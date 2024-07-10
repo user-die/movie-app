@@ -32,7 +32,6 @@ coverage
 
 /src/components/FilmsList.vue
 
-/src/views/FilmProfile
 /src/views/Actors.vue
 /src/views/Favorite.vue
 /src/views/Films.vue

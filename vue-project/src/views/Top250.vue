@@ -1,7 +1,10 @@
 <template>
-  <div class="d-flex flex-column gap-2 justify-content-between" style="min-height: 120vh">
+  <div
+    class="container mainBg p-4 d-flex flex-column justify-content-between"
+    style="min-height: 100vh"
+  >
     <main>
-      <h1 class="text-white m-0">250 Лучших фильмов</h1>
+      <h2 class="fs-1 fw-bold text-danger">250 Лучших фильмов</h2>
 
       <div class="d-flex align-items-center justify-content-start my-3 gap-3">
         <label class="text-white fs-4" for="inp"> По версии</label>
@@ -18,7 +21,7 @@
           v-for="film in films.data"
           :key="film.id"
           :item="film"
-          style="width: 270px"
+          style="width: 253px"
         ></FilmCard>
       </article>
     </main>
@@ -35,7 +38,10 @@ import FilmCard from '@/components/FilmCard.vue'
 import { BFormSelect } from 'bootstrap-vue-next'
 
 const observerRef = ref(null)
-const films = reactive({ data: [] })
+const films = reactive({
+  data: []
+})
+
 const page = ref(1)
 const version = ref('kp')
 const versions = [
@@ -44,13 +50,29 @@ const versions = [
   { value: 'filmCritics', text: 'Зарубежных критиков' }
 ]
 
-async function getTop250(page, version) {
+var getTop250 = async (page, version) => {
   let response = await axios(
-    `https://api.kinopoisk.dev/v1.4/movie?page=${page}&limit=10&sortField=rating.${version}&sortType=-1&lists=top250`,
+    `https://api.kinopoisk.dev/v1.4/movie?page=${page}&limit=20&sortField=rating.${version}&sortType=-1&lists=top250`,
     options
   )
 
-  films.data = [...films.data, ...response.data.docs]
+  films.data = [
+    ...films.data,
+    ...response.data.docs.map(
+      (element) =>
+        (element = {
+          id: element.id,
+          name: element.name,
+          image: element.poster.url,
+          genres: element.genres.map((el) => el.name),
+          year: element.year,
+          rating: {
+            kp: element.rating.kp,
+            imdb: element.rating.imdb
+          }
+        })
+    )
+  ]
 }
 
 watch(version, async (newValue) => {

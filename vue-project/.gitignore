@@ -30,12 +30,8 @@ coverage
 *.tsbuildinfo
 
 
-/src/components/FilmsList.vue
-
 /src/views/Actors.vue
-/src/views/Favorite.vue
 /src/views/Films.vue
 /src/views/Home.vue
 /src/views/Search.vue
 /src/views/Serials.vue
-/src/views/Wishlist.vue

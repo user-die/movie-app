@@ -1,7 +1,7 @@
 <template>
   <article v-if="awards.length > 0">
     <div class="w-100 mb-2 mt-4 d-flex gap-3">
-      <h2 class="text-danger m-0">{{ props.text }}</h2>
+      <h2 class="text-danger m-0 fs-1 fw-bold">{{ props.text }}</h2>
 
       <BButton
         @click="
@@ -20,9 +20,9 @@
       class="d-flex flex-column overflow-hidden align-items-start ps-4 m-0"
       :style="{ maxHeight: awardsToggle ? '200px' : '100%' }"
     >
-      <li v-for="award in props.awards" :key="award.nomination.title">
-        {{ award.nomination.award.title }}, {{ award.nomination.award.year }} -
-        {{ award.nomination.title }}
+      <li v-for="award in props.awards" :key="award?.nomination?.title">
+        {{ award?.nomination?.award?.title }}, {{ award?.nomination?.award?.year }} -
+        {{ award?.nomination?.title }}
         <router-link
           v-if="award?.movie?.name"
           :to="'/movie/' + award?.movie?.id"

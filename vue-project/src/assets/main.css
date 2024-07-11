@@ -16,13 +16,18 @@
 }
 
 html,
-body {
+body,
+#app {
   height: 100%;
   font-family: Nunito;
 }
 
+h1 {
+  font-family: Anton, sans-serif;
+}
+
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 6px;
   background-color: #212529;
 }
 
@@ -61,4 +66,8 @@ body {
   width: 120px;
   object-fit: cover;
   height: 180px;
+}
+
+.mainBg {
+  background: rgb(18, 18, 18);
 }

@@ -2,7 +2,7 @@
   <article class="d-grid flex-column justify-content-between align-items-start">
     <div>
       <div class="d-flex align-items-center gap-5">
-        <h1 class="mb-0">{{ actor.name }}</h1>
+        <h1 class="mb-0 actorName fw-bold">{{ actor.name }}</h1>
         <WishlistButton
           :id="props.actor.id"
           text="Любимая звезда"
@@ -74,4 +74,8 @@ const options = {
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.actorName {
+  font-family: Anton, sans-serif;
+}
+</style>

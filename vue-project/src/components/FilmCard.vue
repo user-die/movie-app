@@ -1,23 +1,23 @@
 <template>
   <router-link :to="'/movie/' + item?.id" class="text-decoration-none">
-    <BCard tag="article" class="rounded-5 bg-light-subtle" style="height: 60vh">
+    <BCard
+      tag="article"
+      class="rounded-5 bg-light-subtle"
+      style="height: 400px"
+      :style="backgroundStyles(item.image)"
+    >
       <BCardBody
-        class="h-100 d-grid gap-2 align-items-center justify-content-between justify-items-center"
+        class="h-100 d-grid gap-2 align-items-center justify-content-between justify-items-center p-0 align-content-between"
       >
-        <div class="d-flex flex-column align-items-center">
-          <BImg
-            :src="item.poster?.url || item.poster?.previewUrl || ''"
-            class="rounded-3 w-75 h-75"
-          />
-
-          <h3 class="m-0 fs-4 mt-2 text-center">
+        <div class="d-flex flex-column align-items-center text-break">
+          <h3 class="m-0 fs-3 text-center fw-bold">
             {{ item.name || item.alternativeName }}
           </h3>
         </div>
 
         <p class="m-0 text-center">
           {{ item.year }}
-          <span v-for="elem in item?.genres" :key="elem.name">{{ ', ' + elem.name }}</span>
+          <span v-for="elem in item?.genres" :key="elem">{{ ', ' + elem }}</span>
         </p>
 
         <BCardText>
@@ -32,9 +32,9 @@
               <p class="text-warning m-0">{{ item.rating?.kp.toFixed(1) }}</p>
             </section>
 
-            <WishlistButton :id="item.id" :list="'favorites'" :type="2" />
+            <FavoriteButton :id="item.id" />
 
-            <WishlistButton :id="item.id" :list="'wishlist'" :type="1" />
+            <WishlistButton :id="item.id" />
           </article>
         </BCardText>
       </BCardBody>
@@ -43,8 +43,17 @@
 </template>
 
 <script setup>
-import { BCard, BImg } from 'bootstrap-vue-next'
+import { BCard, BCardText, BCardBody } from 'bootstrap-vue-next'
 import WishlistButton from './WishlistButton.vue'
+import FavoriteButton from './FavoriteButton.vue'
+
+var backgroundStyles = (img) => {
+  return {
+    background: `linear-gradient(rgba(29 , 29, 30, 0.8) 0%, rgba(29, 29, 30, 0.8)), url(${img})`,
+    'background-size': 'cover',
+    'background-position': 'center'
+  }
+}
 
 defineProps({
   item: Object

@@ -1,5 +1,5 @@
 <template>
-  <nav class="d-flex flex-row w-100 p-3 gap-3 bg-black justify-content-center" style="width: 250px">
+  <nav class="d-flex flex-row w-100 p-3 gap-3 justify-content-center mainBg" style="width: 250px">
     <div class="text-danger d-flex align-items-center gap-2">
       <Camera />
       <h2 class="m-0 text-white">Movie App</h2>

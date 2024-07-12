@@ -35,8 +35,8 @@
         <p class="m-0" style="width: 120px">{{ actor.name }}</p>
         <p>{{ actor?.description }}</p>
 
-        <p v-if="props.prof" class="m-0 text-warning" style="width: 120px">
-          <span v-for="prof in actor.professions" :key="prof">{{ prof.slice(0, -1) + ' ' }}</span>
+        <p class="m-0 text-warning" style="width: 120px">
+          <span v-for="prof in actor?.professions" :key="prof">{{ prof.slice(0, -1) + ' ' }}</span>
         </p>
       </router-link>
     </div>

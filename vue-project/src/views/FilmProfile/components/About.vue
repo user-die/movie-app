@@ -5,23 +5,18 @@
 
       <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8 col-xxl-9">
         <div class="d-flex align-items-center gap-5">
-          <div class="d-flex gap-5 align-items-center">
-            <h2 class="mb-0 text-danger fs-1 fw-bold">{{ film.name }}</h2>
+          <div class="d-flex w-100 justify-content-between align-items-center">
+            <h1 class="mb-0 text-danger fs-1 fw-bold">{{ film.name }}</h1>
 
             <div class="d-flex gap-3">
-              <WishlistButton
-                :id="props.film.id"
-                text="В избранное"
-                :list="'favorites'"
-                :type="2"
-              />
+              <WishlistButton :id="props.film.id" text="В избранное" />
 
-              <WishlistButton :id="props.film.id" text="В закладки" :list="'wishlist'" :type="1" />
+              <FavoriteButton :id="props.film.id" text="В закладки" />
             </div>
           </div>
         </div>
 
-        <p class="fs-5 text-secondary">{{ film.alternativeName }}</p>
+        <p class="fs-5 text-secondary mt-1">{{ film.alternativeName }}</p>
 
         <p class="fs-5">{{ film?.shortDescription }}</p>
 
@@ -75,7 +70,7 @@
               </p>
               <p class="mb-2">{{ props.film?.ageRating }}+</p>
               <p class="mb-2">
-                {{ props.film?.persons?.find((el) => el.profession === 'режиссеры').name }}
+                {{ props.film.director }}
               </p>
               <p class="mb-2">
                 {{ new Date(props.film?.premiere?.world).toLocaleDateString('ru-RU', options) }}
@@ -84,13 +79,9 @@
                 {{ new Date(props.film?.premiere?.russia).toLocaleDateString('ru-RU', options) }}
               </p>
             </section>
-
-            <section>
-              <span class="top text-warning">ТОП 250</span>
-            </section>
           </article>
 
-          <section class="col-3">
+          <section class="col-5 d-flex flex-column align-items-center gap-3">
             <h2 class="text-danger">Рейтинг</h2>
 
             <article class="d-flex gap-4">
@@ -108,6 +99,15 @@
                 </p>
               </div>
             </article>
+
+            <section
+              v-if="film.top250"
+              class="top text-warning fs-3 d-flex flex-column align-items-center"
+            >
+              <p class="m-0">{{ film.top250 }} МЕСТО</p>
+
+              <p>В ТОП 250</p>
+            </section>
           </section>
         </div>
       </div>
@@ -119,6 +119,9 @@
 import kp from '@/assets/kp.png'
 import imdb from '@/assets/imdb.png'
 import WishlistButton from '@/components/WishlistButton.vue'
+import FavoriteButton from '@/components/FavoriteButton.vue'
+import Trophy from '~icons/bi/trophy-fill'
+import Award from '~icons/bi/award-fill'
 
 const props = defineProps({
   film: Object

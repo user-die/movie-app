@@ -133,7 +133,7 @@ var genres = [
 var getFilms = async () => {
   let response = await axios(
     `https://api.kinopoisk.dev/v1.4/movie?page=1&limit=250&${wishlistStore.wishlist.data.map((el) => `&id=${el}`).join('')}`,
-    options
+    options['request1']
   )
 
   films.data = [

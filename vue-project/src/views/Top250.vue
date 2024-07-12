@@ -53,7 +53,7 @@ const versions = [
 var getTop250 = async (page, version) => {
   let response = await axios(
     `https://api.kinopoisk.dev/v1.4/movie?page=${page}&limit=20&sortField=rating.${version}&sortType=-1&lists=top250`,
-    options
+    options['request1']
   )
 
   films.data = [

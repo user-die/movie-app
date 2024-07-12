@@ -1,14 +1,9 @@
 <template>
-  <article class="d-grid flex-column justify-content-between align-items-start">
+  <article class="d-grid flex-column align-items-start">
     <div>
-      <div class="d-flex align-items-center gap-5">
+      <div class="d-flex align-items-center justify-content-between">
         <h1 class="mb-0 actorName fw-bold">{{ actor.name }}</h1>
-        <WishlistButton
-          :id="props.actor.id"
-          text="Любимая звезда"
-          list="FavoriteActors"
-          :type="3"
-        />
+        <FavoriteStarButton :id="props.actor.id" text="Любимая звезда" />
       </div>
 
       <p class="fs-5 text-secondary mb-3">{{ actor.enName }}</p>
@@ -42,7 +37,7 @@
 </template>
 
 <script setup>
-import WishlistButton from '@/components/WishlistButton.vue'
+import FavoriteStarButton from '@/components/FavoriteStarButton.vue'
 
 const props = defineProps({
   actor: Object

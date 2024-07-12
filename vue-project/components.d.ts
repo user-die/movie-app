@@ -8,14 +8,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     FavoriteButton: typeof import('./src/components/FavoriteButton.vue')['default']
-    FavoritesButton: typeof import(./src/components/FavoriteButton.vueue')['default']
-    FavotiteButton: typeof import('./src/components/FavotiteButton.vue')['default']
+    FavoriteStarButton: typeof import('./src/components/FavoriteStarButton.vue')['default']
     FilmCard: typeof import('./src/components/FilmCard.vue')['default']
     FilmsList: typeof import('./src/components/FilmsList.vue')['default']
     Navbar: typeof import('./src/components/Navbar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    WhishlistButton: typeof import('./src/components/WishlistButton.vue')['default']
+    Search: typeof import('./src/components/Search.vue')['default']
     WishlistButton: typeof import('./src/components/WishlistButton.vue')['default']
   }
 }

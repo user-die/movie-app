@@ -1,4 +1,10 @@
 {
-  "method": "GET",
-  "headers": { "accept": "application/json", "X-API-KEY": "HMZSSNC-D24MSY6-JMTPS3D-M3NSBFS" }
+  "request1": {
+    "method": "GET",
+    "headers": { "accept": "application/json", "X-API-KEY": "HMZSSNC-D24MSY6-JMTPS3D-M3NSBFS" }
+  },
+  "request2": {
+    "method": "GET",
+    "headers": { "accept": "application/json", "X-API-KEY": "37f352fb-67f4-4694-bc7c-35212cb29e3b" }
+  }
 }

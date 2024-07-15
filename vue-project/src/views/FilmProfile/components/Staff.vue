@@ -31,7 +31,11 @@
         :to="'/actor/' + actor.id"
         style="width: 120px"
       >
-        <img :src="actor.photo" alt="" class="actorsImage rounded-4" />
+        <img
+          :src="`https://image.openmoviedb.com/kinopoisk-st-images//actor_iphone/iphone90_${actor.id}.jpg`"
+          alt=""
+          class="actorsImage rounded-4"
+        />
         <p class="m-0" style="width: 120px">{{ actor.name }}</p>
         <p>{{ actor?.description }}</p>
 

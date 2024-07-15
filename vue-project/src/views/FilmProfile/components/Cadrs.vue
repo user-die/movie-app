@@ -11,7 +11,11 @@
     >
       <BCarouselSlide v-for="cadr in cadrs.data" :key="cadr.id">
         <template #img>
-          <img :src="cadr.imageUrl" alt="" style="height: 400px; object-fit: cover; width: 100%" />
+          <img
+            :src="cadr.previewUrl"
+            alt=""
+            style="height: 400px; object-fit: cover; width: 100%"
+          />
         </template>
       </BCarouselSlide>
     </BCarousel>

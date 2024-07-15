@@ -4,19 +4,22 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/home',
+      path: '/',
       name: 'home',
-      component: () => import('../views/Home.vue')
+      component: () => import('../views/Home/Home.vue'),
+      meta: { title: 'My app' }
     },
     {
       path: '/films',
       name: 'films',
-      component: () => import('../views/Films.vue')
+      component: () => import('../views/Films.vue'),
+      props: { isSeries: false }
     },
     {
       path: '/serials',
       name: 'serials',
-      component: () => import('../views/Serials.vue')
+      component: () => import('../views/Films.vue'),
+      props: { isSeries: true }
     },
     {
       path: '/actors',
@@ -57,7 +60,8 @@ const router = createRouter({
       path: '/persons/:id',
       name: 'persons',
       component: () => import('../views/ActorProfile/ActorProfile.vue')
-    }
+    },
+    { path: '/:catchAll(.*)', component: () => import('../views/NotFound.vue') }
   ]
 })
 

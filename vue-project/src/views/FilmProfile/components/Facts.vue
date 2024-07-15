@@ -66,7 +66,7 @@ import options from '../../../options.json'
 import ChevronRight from '~icons/bi/chevron-right'
 import ChevronDown from '~icons/bi/chevron-down'
 import { BButton } from 'bootstrap-vue-next'
-import { onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 
 var factsToggle = ref(true)
 var errorsToggle = ref(true)
@@ -85,6 +85,10 @@ var getFacts = async (id) => {
 
   facts.data = response.data.items
 }
+
+watch(props, (newValue) => {
+  getFacts(newValue.id)
+})
 
 onMounted(() => {
   getFacts(props.id)

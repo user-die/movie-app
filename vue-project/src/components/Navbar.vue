@@ -31,7 +31,7 @@ import BookmarksStar from '~icons/bi/bookmark-star'
 import Search from './Search.vue'
 
 const routes = [
-  //{ route: 'search', name: 'Поиск', icon: Search },
+  { route: '', name: 'Главная' },
   { route: 'films', name: 'Фильмы', icon: Film },
   { route: 'serials', name: 'Сериалы', icon: Camera },
   { route: 'actors', name: 'Актёры', icon: People },

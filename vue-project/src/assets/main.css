@@ -62,12 +62,6 @@ h1 {
   height: 250px;
 }
 
-.actorsImage {
-  width: 120px;
-  object-fit: cover;
-  height: 180px;
-}
-
 .mainBg {
   background: rgb(18, 18, 18);
 }

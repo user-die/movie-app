@@ -1,5 +1,5 @@
 <template>
-  <article v-if="awards.length > 0">
+  <article v-if="awards?.length > 0">
     <div class="w-100 mb-2 mt-4 d-flex gap-3">
       <h2 class="text-danger m-0 fs-1 fw-bold">{{ props.text }}</h2>
 

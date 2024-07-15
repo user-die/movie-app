@@ -1,38 +1,8 @@
 <template>
-  <div class="d-flex flex-column gap-5">
-    <div class="row">
-      <div class="col-5">
-        <BFormInput
-          id="input-default"
-          class="bg-dark border-danger text-white"
-          placeholder="Поиск"
-        />
-      </div>
-
-      <div class="col-2">
-        <BFormSelect
-          class="bg-dark border-danger text-white"
-          v-model="genresInput"
-          :options="genres"
-        >
-          <template #first>
-            <BFormSelectOption :value="null" disabled>Жанр</BFormSelectOption>
-          </template>
-        </BFormSelect>
-      </div>
-
-      <div class="col-2">
-        <BFormSelect class="bg-dark border-danger text-white" v-model="typeInput" :options="types">
-          <template #first>
-            <BFormSelectOption :value="null" disabled>Тип</BFormSelectOption>
-          </template>
-        </BFormSelect>
-      </div>
-    </div>
-
+  <div class="d-flex flex-column gap-3 p-4">
     <FilmsList :filmList="popularFilms.data" title="Популярные" />
     <FilmsList :filmList="mostViewed.data" title="Самые просматриваемые" />
-    <FilmsList :filmList="inCinema.data" title="Сейчас в кино" />
+    <FilmsList v-if="!props.isSeries" :filmList="inCinema.data" title="Сейчас в кино" />
     <FilmsList :filmList="latestFilms.data" title="Последние" />
     <FilmsList :filmList="bestsFilms.data" title="Лучшие" />
     <FilmsList :filmList="waiting.data" title="Ожидаемые" />
@@ -42,13 +12,13 @@
 
 <script setup>
 import axios from 'axios'
-import { onMounted, reactive, ref } from 'vue'
-import { BFormInput, BFormSelect, BFormSelectOption } from 'bootstrap-vue-next'
+import { onMounted, reactive } from 'vue'
 import FilmsList from '@/components/FilmsList.vue'
 import options from '../options.json'
 
-var typeInput = ref('Фильм')
-var genresInput = ref(null)
+const props = defineProps({
+  isSeries: Boolean
+})
 
 var popularFilms = reactive({ data: [] })
 var bestsFilms = reactive({ data: [] })
@@ -58,85 +28,103 @@ var inCinema = reactive({ data: [] })
 var waiting = reactive({ data: [] })
 var mostViewed = reactive({ data: [] })
 
-var types = ['Фильм', 'Сериал', 'Мультфильм', 'Мультсериал', 'Аниме']
-var genres = [
-  'Биография',
-  'Боевик',
-  'Вестерн',
-  'Военный',
-  'Детектив',
-  'Детский',
-  'Для взрослых',
-  'Документальный',
-  'Драма',
-  'Игра',
-  'История',
-  'Комедия',
-  'Концерт',
-  'Короткометражка',
-  'криминал',
-  'Мелодрама',
-  'Музыка',
-  'Мультфильм',
-  'Мюзикл',
-  'Новости',
-  'Нуар',
-  'Приключения',
-  'Реальное ТВ',
-  'Семейный',
-  'Спорт',
-  'Ток-шоу',
-  'Триллер',
-  'Ужасы',
-  'Фантаскика',
-  'Фэнтези',
-  'Церемония'
-]
-
-async function getFilms(params, array) {
-  let response = await axios(`https://api.kinopoisk.dev/v1.4/${params}`, options['request1'])
-
-  array.data = response.data.docs
-}
-
 function randomInteger(min, max) {
-  // случайное число от min до (max+1)
   let rand = min + Math.random() * (max + 1 - min)
   return Math.floor(rand)
 }
 
-var date = new Date().getFullYear()
+var year = new Date().getFullYear()
+var month = new Date().toLocaleString('En', { month: 'long' })
+
+async function getFilms(params, array) {
+  let response = await axios(`https://api.kinopoisk.dev/v1.4/${params}`, options['request1'])
+
+  array.data = response.data.docs.map(
+    (element) =>
+      (element = {
+        id: element.id,
+        name: element.name || element.alternativeName,
+        image: element?.poster?.url,
+        genres: element.genres.map((el) => el.name),
+        year: element.year,
+        rating: {
+          kp: element.rating.kp,
+          imdb: element.rating.imdb
+        }
+      })
+  )
+}
+
+async function getFilms2(params, array) {
+  let response = await axios(
+    `https://kinopoiskapiunofficial.tech/api/v2.2/films${params}`,
+    options['request2']
+  )
+
+  array.data = response.data.items.map(
+    (element) =>
+      (element = {
+        id: element.kinopoiskId,
+        name: element.nameRu || element.nameOriginal,
+        image: element.posterUrl,
+        genres: element.genres.map((el) => el.genre),
+        year: element.year,
+        rating: {
+          kp: element.ratingKinopoisk,
+          imdb: element.ratingImdb
+        }
+      })
+  )
+}
+
+async function getRandomFilms() {
+  let response = await axios(
+    `https://api.kinopoisk.dev/v1.4/movie?page=1&limit=20&isSeries=${props.isSeries}`,
+    options['request1']
+  )
+
+  let randomPage = randomInteger(1, response.data.pages)
+
+  getFilms(`movie?page=${randomPage}&limit=20&isSeries=${props.isSeries}`, randomFilms)
+}
 
 onMounted(() => {
-  /* ГОТОВО
-
-  getFilms('movie?page=1&limit=10&sortField=votes.kp&sortType=-1&isSeries=false', mostViewed)
-
+  getFilms2(
+    `/collections?type=${props.isSeries ? 'POPULAR_SERIES' : 'TOP_POPULAR_MOVIES'}&page=1`,
+    popularFilms
+  )
 
   getFilms(
-    'movie?page=1&limit=10&sortField=year&sortField=rating.kp&sortType=-1&sortType=-1&ticketsOnSale=true',
+    `movie?page=1&limit=20&sortField=votes.kp&sortType=-1&isSeries=${props.isSeries}`,
+    mostViewed
+  )
+
+  getFilms(
+    'movie?page=1&limit=20&sortField=year&sortField=rating.kp&sortType=-1&sortType=-1&ticketsOnSale=true',
     inCinema
   )
 
-    getFilms(`movie?page=${randomInteger(1, 25)}&limit=10&lists=top250`, bestsFilms)
+  props.isSeries
+    ? getFilms(
+        `movie?page=1&sortField=year&sortType=-1&limit=20&lists=popular-series`,
+        popularFilms
+      )
+    : getFilms2(
+        `/premieres?year=${year}&month=${month.toUpperCase()}&page=1&isSeries=${props.isSeries}`,
+        latestFilms
+      )
 
-      getFilms(
-    'movie?page=1&limit=10&sortField=votes.await&sortType=-1&lists=planned-to-watch-films&isSeries=false',
-    waiting
-  )
-  
-  getFilms(`movie?page=${randomInteger(1, 95000)}&limit=10&isSeries=false`, randomFilms)
-
-
-  */
-  //getFilms(`movie?page=1&limit=10&sortField=status&sortField=year&sortType=1&sortType=-1&isSeries=false&year=${date}`, latestFilms)*/  // Последние
-  /*
   getFilms(
-    'movie?page=1&limit=10&sortField=votes.await&sortType=-1&lists=popular-films&isSeries=false',
-    popularFilms
-  ) // Популярные
+    `movie?page=${randomInteger(1, 25)}&limit=20&lists=${props.isSeries ? 'series-top250' : 'top250'}`,
+    bestsFilms
+  )
 
-  */
+  getFilms(
+    `movie?page=1&limit=20&sortField=votes.await&sortType=-1&lists=planned-to-watch-series&isSeries=${props.isSeries}`, //
+    waiting
+  ) // Не готово
+
+  getRandomFilms()
 })
 </script>
 

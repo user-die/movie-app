@@ -4,7 +4,15 @@
     style="min-height: 100vh"
   >
     <main>
-      <h2 class="fs-1 fw-bold text-danger">250 Лучших фильмов</h2>
+      <h2 class="d-flex align-items-center gap-2 fs-1 fw-bold text-danger">
+        <span>250 Лучших</span>
+        <BFormSelect
+          id="inp"
+          v-model="type"
+          :options="types"
+          class="bg-dark border-danger w-25 text-danger fs-4"
+        />
+      </h2>
 
       <div class="d-flex align-items-center justify-content-start my-3 gap-3">
         <label class="text-white fs-4" for="inp"> По версии</label>
@@ -36,11 +44,31 @@ import { onMounted, reactive, ref, watch } from 'vue'
 import options from '../options.json'
 import FilmCard from '@/components/FilmCard.vue'
 import { BFormSelect } from 'bootstrap-vue-next'
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Топ 250',
+  meta: [
+    {
+      name: 'description',
+      content: 'Топ фильмов и сериалов по версии Кинопоиск, imdb, кинокритиков'
+    }
+  ]
+})
 
 const observerRef = ref(null)
 const films = reactive({
   data: []
 })
+
+const type = ref('top250')
+const types = [
+  {
+    value: 'top250',
+    text: 'фильмов'
+  },
+  { value: 'series-top250', text: 'сериалов' }
+]
 
 const page = ref(1)
 const version = ref('kp')
@@ -50,9 +78,9 @@ const versions = [
   { value: 'filmCritics', text: 'Зарубежных критиков' }
 ]
 
-var getTop250 = async (page, version) => {
+var getTop250 = async (page, version, list) => {
   let response = await axios(
-    `https://api.kinopoisk.dev/v1.4/movie?page=${page}&limit=20&sortField=rating.${version}&sortType=-1&lists=top250`,
+    `https://api.kinopoisk.dev/v1.4/movie?page=${page}&limit=20&sortField=rating.${version}&sortType=-1&lists=${list}`,
     options['request1']
   )
 
@@ -62,7 +90,7 @@ var getTop250 = async (page, version) => {
       (element) =>
         (element = {
           id: element.id,
-          name: element.name,
+          name: element.name || element.alternativeName,
           image: element.poster.url,
           genres: element.genres.map((el) => el.name),
           year: element.year,
@@ -75,13 +103,18 @@ var getTop250 = async (page, version) => {
   ]
 }
 
+watch(type, async (newValue) => {
+  films.data = []
+  getTop250(1, version.value, newValue)
+})
+
 watch(version, async (newValue) => {
   films.data = []
-  getTop250(1, newValue)
+  getTop250(1, newValue, type.value)
 })
 
 onMounted(() => {
-  getTop250(1, version.value)
+  getTop250(1, version.value, type.value)
 
   var options = {
     rootMargin: '0px',
@@ -91,7 +124,7 @@ onMounted(() => {
   var callback = (entries) => {
     if (entries[0].isIntersecting && page.value < 250) {
       page.value++
-      getTop250(page.value, version.value)
+      getTop250(page.value, version.value, type.value)
     }
   }
 
@@ -100,4 +133,8 @@ onMounted(() => {
 })
 </script>
 
-<style scoped></style>
+<style scoped>
+option {
+  font-family: Nunito;
+}
+</style>

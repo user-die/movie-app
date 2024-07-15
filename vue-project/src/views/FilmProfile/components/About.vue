@@ -1,7 +1,7 @@
 <template>
   <article>
     <div class="row align-items-start">
-      <img :src="film.poster?.url || ''" alt="" class="rounded-5" style="width: 300px" />
+      <img :src="film.poster" alt="" class="rounded-5" style="width: 300px" />
 
       <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8 col-xxl-9">
         <div class="d-flex align-items-center gap-5">

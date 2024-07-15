@@ -1,10 +1,10 @@
 <template>
-  <div :style="backgroundStyles(film?.data?.backdrop?.url)">
+  <div :style="backgroundStyles(film?.data?.backdrop?.url.replace('orig', 'x660'))">
     <article class="text-white container p-4 bg">
       <div>
         <About
           :film="{
-            poster: film.data.poster,
+            poster: film.data?.poster?.url.replace('orig', 'x390'),
             id: film.data.id,
             name: film.data?.name,
             alternativeName: film.data.alternativeName,

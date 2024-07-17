@@ -9,9 +9,9 @@
             <h1 class="mb-0 text-danger fs-1 fw-bold">{{ film.name }}</h1>
 
             <div class="d-flex gap-3">
-              <WishlistButton :id="props.film.id" text="В избранное" />
+              <WishlistButton :type="1" list="wishlist" :id="props.film.id" text="В закладки" />
 
-              <FavoriteButton :id="props.film.id" text="В закладки" />
+              <WishlistButton :type="2" list="favorites" :id="props.film.id" text="В избранное" />
             </div>
           </div>
         </div>
@@ -119,9 +119,6 @@
 import kp from '@/assets/kp.png'
 import imdb from '@/assets/imdb.png'
 import WishlistButton from '@/components/WishlistButton.vue'
-import FavoriteButton from '@/components/FavoriteButton.vue'
-import Trophy from '~icons/bi/trophy-fill'
-import Award from '~icons/bi/award-fill'
 
 const props = defineProps({
   film: Object

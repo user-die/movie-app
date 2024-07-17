@@ -3,17 +3,17 @@
     <div class="w-100 mb-2 mt-4 d-flex gap-3">
       <h2 class="text-danger m-0 fs-1 fw-bold">{{ props.text }}</h2>
 
-      <BButton
+      <button
         @click="
           () => {
             awardsToggle = !awardsToggle
           }
         "
-        variant="outline-danger"
+        class="btn btn-outline-danger"
       >
         <ChevronRight v-if="awardsToggle" />
         <ChevronDown v-else />
-      </BButton>
+      </button>
     </div>
 
     <ul
@@ -38,7 +38,6 @@
 <script setup>
 import ChevronRight from '~icons/bi/chevron-right'
 import ChevronDown from '~icons/bi/chevron-down'
-import { BButton } from 'bootstrap-vue-next'
 import { ref } from 'vue'
 
 var awardsToggle = ref(true)

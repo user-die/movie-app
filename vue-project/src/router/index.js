@@ -22,24 +22,16 @@ const router = createRouter({
       props: { isSeries: true }
     },
     {
-      path: '/actors',
-      name: 'actors',
-      component: () => import('../views/Actors.vue')
-    },
-    {
-      path: '/search',
-      name: 'search',
-      component: () => import('../views/Search.vue')
-    },
-    {
       path: '/favorite',
       name: 'favorite',
-      component: () => import('../views/Favorite.vue')
+      component: () => import('../views/Wishlist.vue'),
+      props: { list: 'favorites' }
     },
     {
       path: '/wishlist',
       name: 'wishlist',
-      component: () => import('../views/Wishlist.vue')
+      component: () => import('../views/Wishlist.vue'),
+      props: { list: 'wishlist' }
     },
     {
       path: '/top250',

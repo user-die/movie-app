@@ -1,19 +1,19 @@
 <template>
-  <article v-if="facts">
+  <article v-if="facts?.length > 0">
     <div class="w-100 d-flex gap-3 col-12 mb-2">
       <h2 class="text-danger m-0 fs-1 fw-bold">Интереные факты</h2>
 
-      <BButton
+      <button
         @click="
           () => {
             factsToggle = !factsToggle
           }
         "
-        variant="outline-danger"
+        class="btn btn-outline-danger"
       >
         <ChevronRight v-if="factsToggle" />
         <ChevronDown v-else />
-      </BButton>
+      </button>
     </div>
 
     <ul
@@ -30,7 +30,6 @@
 <script setup>
 import ChevronRight from '~icons/bi/chevron-right'
 import ChevronDown from '~icons/bi/chevron-down'
-import { BButton } from 'bootstrap-vue-next'
 import { ref } from 'vue'
 
 var factsToggle = ref(true)

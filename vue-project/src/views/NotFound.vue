@@ -5,6 +5,18 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: 'Страница не найдена',
+  meta: [
+    {
+      name: 'description',
+      content: 'Страница не найдена'
+    }
+  ]
+})
+</script>
 
 <style scoped></style>

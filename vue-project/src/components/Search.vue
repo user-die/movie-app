@@ -5,10 +5,12 @@
         v-model="search"
         type="text"
         placeholder="Введите запрос..."
-        class="text-white text-decoration-none"
+        class="text-white text-decoration-none mainBg"
         @click="show = !show"
       />
-      <button @click="searchButton" type="button"><Search /></button>
+      <button @click="searchButton" type="button" style="background: rgb(18, 18, 18)">
+        <Search class="text-white" />
+      </button>
     </div>
 
     <div class="dropdown w-100">

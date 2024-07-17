@@ -1,36 +1,38 @@
 <template>
-  <div
-    class="container mainBg p-4 d-flex flex-column justify-content-between"
-    style="min-height: 100vh"
-  >
-    <main>
+  <div v-if="isError">
+    <p class="fs-1 text-center">{{ errorMessage }}</p>
+  </div>
+
+  <div v-else class="container mainBg p-4 d-flex flex-column justify-content-between mh">
+    <main class="d-grid">
       <h2 class="d-flex align-items-center gap-2 fs-1 fw-bold text-danger">
         <span>250 Лучших</span>
-        <BFormSelect
+        <select
           id="inp"
           v-model="type"
-          :options="types"
-          class="bg-dark border-danger w-25 text-danger fs-4"
-        />
+          class="form-select bg-dark border-danger w-25 text-danger fs-4"
+        >
+          <option v-for="option in types" :key="option.value" :value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
       </h2>
 
       <div class="d-flex align-items-center justify-content-start my-3 gap-3">
         <label class="text-white fs-4" for="inp"> По версии</label>
-        <BFormSelect
+        <select
           id="inp"
           v-model="version"
-          :options="versions"
-          class="bg-dark border-danger w-25"
-        />
+          class="form-select bg-dark border-danger w-25 text-white"
+        >
+          <option v-for="option in versions" :key="option.value" :value="option.value">
+            {{ option.text }}
+          </option>
+        </select>
       </div>
 
-      <article class="row row-gap-3">
-        <FilmCard
-          v-for="film in films.data"
-          :key="film.id"
-          :item="film"
-          style="width: 253px"
-        ></FilmCard>
+      <article class="row row-gap-3 list">
+        <FilmCard v-for="film in films.data" :key="film.id" :item="film" class="w253"></FilmCard>
       </article>
     </main>
 
@@ -43,7 +45,6 @@ import axios from 'axios'
 import { onMounted, reactive, ref, watch } from 'vue'
 import options from '../options.json'
 import FilmCard from '@/components/FilmCard.vue'
-import { BFormSelect } from 'bootstrap-vue-next'
 import { useHead } from '@unhead/vue'
 
 useHead({
@@ -55,6 +56,9 @@ useHead({
     }
   ]
 })
+
+const isError = ref(false)
+const errorMessage = ref()
 
 const observerRef = ref(null)
 const films = reactive({
@@ -82,7 +86,10 @@ var getTop250 = async (page, version, list) => {
   let response = await axios(
     `https://api.kinopoisk.dev/v1.4/movie?page=${page}&limit=20&sortField=rating.${version}&sortType=-1&lists=${list}`,
     options['request1']
-  )
+  ).catch((error) => {
+    errorMessage.value = error.response.data.message
+    isError.value = true
+  })
 
   films.data = [
     ...films.data,
@@ -91,7 +98,7 @@ var getTop250 = async (page, version, list) => {
         (element = {
           id: element.id,
           name: element.name || element.alternativeName,
-          image: element.poster.url,
+          image: element.poster.url.replace('orig', 'x390'),
           genres: element.genres.map((el) => el.name),
           year: element.year,
           rating: {

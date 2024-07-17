@@ -3,17 +3,17 @@
     <div class="w-100 d-flex gap-3 col-12">
       <h2 class="m-0 text-danger fs-1 fw-bold">{{ props.text }}</h2>
 
-      <BButton
+      <button
         @click="
           () => {
             actorsToggle = !actorsToggle
           }
         "
-        variant="outline-danger"
+        class="btn btn-outline-danger"
       >
         <ChevronRight v-if="!actorsToggle" />
         <ChevronDown v-else />
-      </BButton>
+      </button>
     </div>
 
     <div
@@ -32,8 +32,11 @@
         style="width: 120px"
       >
         <img
-          :src="`https://image.openmoviedb.com/kinopoisk-st-images//actor_iphone/iphone90_${actor.id}.jpg`"
-          alt=""
+          :src="
+            `https://image.openmoviedb.com/kinopoisk-st-images//actor_iphone/iphone90_${actor.id}.jpg` ||
+            altImage
+          "
+          :alt="altImage"
           class="actorsImage rounded-4"
         />
         <p class="m-0" style="width: 120px">{{ actor.name }}</p>
@@ -51,7 +54,7 @@
 import { ref } from 'vue'
 import ChevronRight from '~icons/bi/chevron-right'
 import ChevronDown from '~icons/bi/chevron-down'
-import { BButton } from 'bootstrap-vue-next'
+import altImage from '@/assets/alt.png'
 
 var actorsToggle = ref(false)
 

@@ -1,5 +1,5 @@
 <template>
-  <article class="mt-4">
+  <article class="mt-4" v-if="props?.movies?.length > 0">
     <OtherFilms
       v-if="films?.data"
       :films="films?.data.sort((a, b) => b.year - a.year)"
@@ -9,17 +9,17 @@
     <div class="w-100 d-flex gap-3 col-12 mb-2">
       <h2 class="text-danger m-0 fs-1 fw-bold">Участие в проектах</h2>
 
-      <BButton
+      <button
         @click="
           () => {
             rolesToggle = !rolesToggle
           }
         "
-        variant="outline-danger"
+        class="btn btn-outline-danger"
       >
         <ChevronRight v-if="rolesToggle" />
         <ChevronDown v-else />
-      </BButton>
+      </button>
     </div>
 
     <ul
@@ -43,8 +43,7 @@ import options from '@/options.json'
 import ChevronRight from '~icons/bi/chevron-right'
 import ChevronDown from '~icons/bi/chevron-down'
 import OtherFilms from '@/views/FilmProfile/components/OtherFilms.vue'
-import { BButton } from 'bootstrap-vue-next'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 
 var rolesToggle = ref(true)
 
@@ -69,7 +68,7 @@ var getFilms = async (array) => {
         (element = {
           id: element.id,
           name: element.name || element.alternativeName,
-          image: element?.poster?.url || element?.poster?.previewUrl || '',
+          image: element?.poster?.url?.replace('orig', 'x120') || '',
           year: element.year
         })
     )

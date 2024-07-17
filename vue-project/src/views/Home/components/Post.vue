@@ -1,28 +1,20 @@
 <template>
-  <BCard bg-variant="info" class="rounded-5" style="height: 400px; width: 400px">
-    <BCardBody class="p-0 d-grid h-100 align-content-between">
-      <BCardTitle class="text-center">{{ post.title }}</BCardTitle>
+  <article bg-variant="info" class="bg-info p-3 rounded-5" style="height: 400px; width: 400px">
+    <div class="card-body p-0 d-grid h-100 align-content-between">
+      <p class="fs-4 text-center text-dark">{{ post.title }}</p>
 
-      <BCardImg
+      <img
         :src="post.imageUrl.replace('orig', '320x180')"
-        class="rounded-4"
+        class="rounded-4 w-100"
         loading="lazy"
         alt="@/assets/alt.png"
       />
-    </BCardBody>
-  </BCard>
+    </div>
+  </article>
 </template>
 
 <script>
-import { BCard, BCardImg, BCardTitle, BCardBody } from 'bootstrap-vue-next'
-
 export default {
-  components: {
-    BCard,
-    BCardImg,
-    BCardTitle,
-    BCardBody
-  },
   props: {
     post: {
       title: String,

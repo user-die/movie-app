@@ -3,7 +3,7 @@
     <div>
       <div class="d-flex align-items-center justify-content-between">
         <h1 class="mb-0 actorName fw-bold">{{ actor.name }}</h1>
-        <FavoriteStarButton :id="props.actor.id" text="Любимая звезда" />
+        <wishlistButton :type="3" list="stars" :id="props.actor.id" text="Любимая звезда" />
       </div>
 
       <p class="fs-5 text-secondary mb-3">{{ actor.enName }}</p>
@@ -11,12 +11,12 @@
 
     <article class="d-flex gap-3 mt-3">
       <article class="text-secondary">
-        <p>Возраст</p>
+        <p v-if="props?.actor?.birthday">Возраст</p>
         <p>Дата рождения</p>
         <p>Место рождения</p>
         <p>Всего фильмов</p>
-        <p>Рост</p>
-        <p>Количество наград</p>
+        <p v-if="props?.actor?.growth">Рост</p>
+        <p v-if="props?.actor?.countAwards">Количество наград</p>
       </article>
 
       <section>
@@ -28,8 +28,8 @@
         <p>
           <span v-text="props.actor.birthPlace?.map((el) => el.value).join(', ')"></span>
         </p>
-        <p>{{ actor.movies?.length }}</p>
-        <p>{{ actor.growth }} см</p>
+        <p>{{ actor.movies?.filter((el) => el.enProfession == 'actor').length }}</p>
+        <p v-if="props?.actor?.growth">{{ actor.growth }} см</p>
         <p>{{ actor.countAwards }}</p>
       </section>
     </article>
@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import FavoriteStarButton from '@/components/FavoriteStarButton.vue'
+import wishlistButton from '@/components/WishlistButton.vue'
 
 const props = defineProps({
   actor: Object

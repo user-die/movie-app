@@ -1,5 +1,5 @@
 <template>
-  <section class="ps-4 d-flex flex-column align-items-center p-4">
+  <section class="d-flex flex-column align-items-center p-0 my-3">
     <h2 class="text-danger fs-1" style="width: round(down, 100%, 366px)">{{ title }}</h2>
     <article class="d-grid align-items-start justify-content-center gap-3 grid">
       <router-link
@@ -15,10 +15,15 @@
         />
         <div>
           <p class="fs-5 m-0">{{ film.name }}</p>
-          <span class="fs-6 m-0 text-body-secondary">{{ film.premiere }}</span>
+          <span class="fs-6 m-0 text-danger">{{
+            new Date(film.premiere).toLocaleDateString('ru', {
+              day: 'numeric',
+              month: 'long'
+            })
+          }}</span>
         </div>
 
-        <WishlistButton :id="film.id" />
+        <WishlistButton :type="1" list="wishlist" :id="film.id" />
       </router-link>
     </article>
   </section>

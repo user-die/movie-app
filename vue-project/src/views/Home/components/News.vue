@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex align-items-center justify-content-center p-4 gap-2">
+  <div class="d-flex align-items-center justify-content-center gap-2 my-3">
     <button @click="leftX" class="btn btn-danger rounded-5">
       <Left />
     </button>
@@ -7,7 +7,7 @@
     <section style="width: calc(-16px + round(down, 100%, 416px))">
       <h2 class="text-danger fs-1">Последние новости</h2>
       <article
-        class="d-flex flex-wrap flex-column overflow-hidden gap-3"
+        class="d-flex align-content-center flex-wrap flex-column overflow-hidden gap-3"
         ref="carousel"
         style="height: 400px"
       >

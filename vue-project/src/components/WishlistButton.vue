@@ -1,31 +1,38 @@
 <template>
-  <BButton
+  <button
     @click="(event) => click(props.id, event)"
-    :variant="(item && 'danger') || 'outline-danger'"
+    class="btn border-danger"
+    :class="(item && 'bg-danger') || 'bg-outline-danger'"
   >
-    {{ props.text }} <Bookmarks />
-  </BButton>
+    {{ props.text }}
+    <Bookmarks v-if="props.type === 1" :class="(item && 'text-dark') || 'text-danger'" />
+    <BookmarksStar v-if="props.type === 2" :class="(item && 'text-dark') || 'text-danger'" />
+    <Heart v-if="props.type === 3" :class="(item && 'text-dark') || 'text-danger'" />
+  </button>
 </template>
 
 <script setup>
-import { BButton } from 'bootstrap-vue-next'
 import { computed } from 'vue'
+import Heart from '~icons/bi/heart'
 import Bookmarks from '~icons/bi/bookmarks'
-import { useWishlistStore } from '@/stores/wishlistStore'
-
-const wishlistStore = useWishlistStore()
+import BookmarksStar from '~icons/bi/bookmark-star'
+import store from '@/stores/index.js'
 
 const props = defineProps({
+  list: String,
   id: Number,
-  text: String
+  text: String,
+  type: Number
 })
 
-var item = computed(() => wishlistStore.wishlist.data.includes(props.id))
+const listStore = store['wishlist']()
+
+var item = computed(() => listStore[props.list].data.includes(props.id))
 
 var click = function (id, event) {
   event.preventDefault()
 
-  item.value ? wishlistStore.deleteWish(id) : wishlistStore.addWish(id)
+  item.value ? listStore.deleteWish(id) : listStore.addWish(id)
 }
 </script>
 

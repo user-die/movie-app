@@ -1,10 +1,14 @@
 <template>
-  <div :style="backgroundStyles(film?.data?.backdrop?.url.replace('orig', 'x660'))">
+  <div v-if="isError">
+    <p class="fs-1 text-center">{{ errorMessage }}</p>
+  </div>
+
+  <div v-else :style="backgroundStyles(film?.data?.backdrop?.url?.replace('orig', 'x660'))">
     <article class="text-white container p-4 bg">
       <div>
         <About
           :film="{
-            poster: film.data?.poster?.url.replace('orig', 'x390'),
+            poster: film.data?.poster?.url?.replace('orig', 'x390'),
             id: film.data.id,
             name: film.data?.name,
             alternativeName: film.data.alternativeName,
@@ -23,6 +27,8 @@
           }"
         />
       </div>
+
+      <Watch :watch="film.data?.watchability?.items" />
 
       <section v-if="film.data?.description" class="row my-4">
         <h2 class="text-danger fs-1 fw-bold">Описание</h2>
@@ -50,8 +56,6 @@
       />
 
       <Facts text="Интересные факты" :id="film.data.id" />
-
-      <!-- ТОП 250 ИЛИ ТОП 10 -->
     </article>
   </div>
 </template>
@@ -66,6 +70,26 @@ import Cadrs from './components/Cadrs.vue'
 import About from './components/About.vue'
 import OtherFilms from './components/OtherFilms.vue'
 import Facts from './components/Facts.vue'
+import Watch from './components/Watch.vue'
+import { useHead } from '@unhead/vue'
+
+useHead({
+  title: computed(() => film?.data?.name || film?.data?.alternativeName),
+  meta: [
+    {
+      name: 'description',
+      content: computed(
+        () =>
+          film?.data?.name ||
+          film?.data?.alternativeName +
+            '. Информация о фильме: актёры, режиссёр, продюссеры, стаф, кадры, бюджет, хронометраж, сиквелы и приквелы, похожие фильмы, где посмотреть, интересные факты, ошибки и ляпы'
+      )
+    }
+  ]
+})
+
+const isError = ref(false)
+const errorMessage = ref()
 
 const route = useRoute()
 var id = ref(route.params.id)
@@ -109,7 +133,13 @@ var backgroundStyles = (img) => {
 }
 
 var getFilm = async (id) => {
-  let response = await axios(`https://api.kinopoisk.dev/v1.4/movie/${id}`, options['request1'])
+  let response = await axios(
+    `https://api.kinopoisk.dev/v1.4/movie/${id}`,
+    options['request1']
+  ).catch((error) => {
+    errorMessage.value = error.response.data.message
+    isError.value = true
+  })
 
   film.data = response.data
 }

@@ -3,17 +3,17 @@
     <div class="w-100 d-flex gap-3 col-12 mb-2">
       <h2 class="text-danger m-0 fs-1 fw-bold">Факты о фильме</h2>
 
-      <BButton
+      <button
         @click="
           () => {
             factsToggle = !factsToggle
           }
         "
-        variant="outline-danger"
+        class="btn btn-outline-danger"
       >
         <ChevronRight v-if="factsToggle" />
         <ChevronDown v-else />
-      </BButton>
+      </button>
     </div>
 
     <ul
@@ -32,17 +32,17 @@
     <div class="w-100 d-flex gap-3 col-12 mb-2">
       <h2 class="text-danger m-0 fs-1 fw-bold">Ошибки в фильме ( возможны спойлеры ! )</h2>
 
-      <BButton
+      <button
         @click="
           () => {
             errorsToggle = !errorsToggle
           }
         "
-        variant="outline-danger"
+        class="btn btn-outline-danger"
       >
         <ChevronRight v-if="errorsToggle" />
         <ChevronDown v-else />
-      </BButton>
+      </button>
     </div>
 
     <ul
@@ -65,7 +65,6 @@ import axios from 'axios'
 import options from '../../../options.json'
 import ChevronRight from '~icons/bi/chevron-right'
 import ChevronDown from '~icons/bi/chevron-down'
-import { BButton } from 'bootstrap-vue-next'
 import { onMounted, reactive, ref, watch } from 'vue'
 
 var factsToggle = ref(true)

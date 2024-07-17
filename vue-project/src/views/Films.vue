@@ -1,5 +1,5 @@
 <template>
-  <div class="d-flex flex-column gap-3 p-4">
+  <div class="d-flex flex-column gap-3 p-4 align-items-center">
     <FilmsList :filmList="popularFilms.data" title="Популярные" />
     <FilmsList :filmList="mostViewed.data" title="Самые просматриваемые" />
     <FilmsList v-if="!props.isSeries" :filmList="inCinema.data" title="Сейчас в кино" />
@@ -12,12 +12,29 @@
 
 <script setup>
 import axios from 'axios'
-import { onMounted, reactive } from 'vue'
+import { useRoute } from 'vue-router'
+import { computed, onMounted, reactive, watch } from 'vue'
 import FilmsList from '@/components/FilmsList.vue'
 import options from '../options.json'
+import { useHead } from '@unhead/vue'
+
+const route = useRoute()
 
 const props = defineProps({
   isSeries: Boolean
+})
+
+useHead({
+  title: 'Фильмы',
+  meta: [
+    {
+      name: 'description',
+      content: computed(
+        () =>
+          `Большая подборка ${props.isSeries ? 'сериалов' : ' фильмов'}: популярные, самые просматриваемые, последние, сейчас в кино, лучшие, ожидаемые, случайные`
+      )
+    }
+  ]
 })
 
 var popularFilms = reactive({ data: [] })
@@ -44,7 +61,7 @@ async function getFilms(params, array) {
       (element = {
         id: element.id,
         name: element.name || element.alternativeName,
-        image: element?.poster?.url,
+        image: element?.poster?.url?.replace('orig', 'x390'),
         genres: element.genres.map((el) => el.name),
         year: element.year,
         rating: {
@@ -66,7 +83,7 @@ async function getFilms2(params, array) {
       (element = {
         id: element.kinopoiskId,
         name: element.nameRu || element.nameOriginal,
-        image: element.posterUrl,
+        image: element.posterUrlPreview,
         genres: element.genres.map((el) => el.genre),
         year: element.year,
         rating: {
@@ -88,7 +105,7 @@ async function getRandomFilms() {
   getFilms(`movie?page=${randomPage}&limit=20&isSeries=${props.isSeries}`, randomFilms)
 }
 
-onMounted(() => {
+function getAllFilms() {
   getFilms2(
     `/collections?type=${props.isSeries ? 'POPULAR_SERIES' : 'TOP_POPULAR_MOVIES'}&page=1`,
     popularFilms
@@ -114,17 +131,22 @@ onMounted(() => {
         latestFilms
       )
 
+  getFilms(`movie?page=1&limit=20&lists=${props.isSeries ? 'series-top250' : 'top250'}`, bestsFilms)
+
   getFilms(
-    `movie?page=${randomInteger(1, 25)}&limit=20&lists=${props.isSeries ? 'series-top250' : 'top250'}`,
-    bestsFilms
+    `movie?page=1&limit=20&sortField=votes.await&sortType=-1&lists=planned-to-watch-films&isSeries=${props.isSeries}`, //
+    waiting
   )
 
-  getFilms(
-    `movie?page=1&limit=20&sortField=votes.await&sortType=-1&lists=planned-to-watch-series&isSeries=${props.isSeries}`, //
-    waiting
-  ) // Не готово
-
   getRandomFilms()
+}
+
+onMounted(() => {
+  getAllFilms()
+})
+
+watch(route, () => {
+  getAllFilms()
 })
 </script>
 

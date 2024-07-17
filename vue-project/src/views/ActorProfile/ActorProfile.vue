@@ -1,7 +1,16 @@
 <template>
-  <article class="text-white container mainBg p-4">
+  <div v-if="isError">
+    <p class="fs-1 text-center">{{ errorMessage }}</p>
+  </div>
+
+  <article v-else class="text-white container mainBg p-4">
     <div class="row gap-2">
-      <img :src="actor.data?.photo || ''" alt="" class="rounded-5" style="width: 300px" />
+      <img
+        :src="actor.data.photo || altImage"
+        :alt="altImage"
+        class="rounded-5"
+        style="width: 300px"
+      />
 
       <About :actor="actor?.data" class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8 col-xxl-9" />
     </div>
@@ -34,13 +43,32 @@ import About from './components/About.vue'
 import Roles from './components/Roles.vue'
 import Facts from './components/Facts.vue'
 import Awards from './components/Awards.vue'
+import { useHead } from '@unhead/vue'
+import altImage from '@/assets/alt.png'
 
-const route = useRoute()
-var id = ref(route.params.id)
+const isError = ref(false)
+const errorMessage = ref()
 
 var actor = reactive({
   data: {}
 })
+
+useHead({
+  title: computed(() => actor.data.name || actor.data.enName),
+  meta: [
+    {
+      name: 'description',
+      content: computed(
+        () =>
+          actor.data.name +
+          '. Информация об актёре / актрисе: рост, дата рождения, место рождения, всего фильмов. участие в фильмах и сериалах, награды, интересные факты'
+      )
+    }
+  ]
+})
+
+const route = useRoute()
+var id = ref(route.params.id)
 
 var awards = reactive({})
 
@@ -72,7 +100,13 @@ var nominations = computed(() =>
 )
 
 var getActor = async (id) => {
-  let response = await axios(`https://api.kinopoisk.dev/v1.4/person/${id}`, options['request1'])
+  let response = await axios(
+    `https://api.kinopoisk.dev/v1.4/person/${id}`,
+    options['request1']
+  ).catch((error) => {
+    errorMessage.value = error.response.data.message
+    isError.value = true
+  })
 
   actor.data = response.data
 }

@@ -1,17 +1,17 @@
 <template>
-  <article>
+  <article style="width: calc(-16px + round(down, 100%, 286px))">
     <div class="d-flex align-items-center text-decoration-none gap-3">
       <h2 class="text-white m-0">{{ title }}</h2>
-      <BButton
+      <button
         @click="
           () => {
             toggle = !toggle
           }
         "
-        class="bg-dark border-danger"
+        class="btn bg-dark border-danger text-danger"
       >
-        <ChevronRight v-if="toggle" /> <ChevronDown v-else
-      /></BButton>
+        <ChevronRight v-if="toggle" /> <ChevronDown v-else />
+      </button>
     </div>
 
     <article class="d-flex flex-wrap gap-3 overflow-hidden mt-3" :class="{ height832: toggle }">
@@ -26,7 +26,6 @@
 </template>
 
 <script setup>
-import { BButton } from 'bootstrap-vue-next'
 import FilmCard from './FilmCard.vue'
 import ChevronRight from '~icons/bi/chevron-right'
 import ChevronDown from '~icons/bi/chevron-down'

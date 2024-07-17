@@ -19,6 +19,11 @@ html,
 body,
 #app {
   height: 100%;
+  font-family: Nunito, sans-serif;
+  color: white;
+}
+
+h2 {
   font-family: Nunito;
 }
 
@@ -64,4 +69,17 @@ h1 {
 
 .mainBg {
   background: rgb(18, 18, 18);
+}
+
+.mh {
+  min-height: 100vh;
+}
+
+.w253 {
+  width: 253px;
+}
+
+.list {
+  width: round(down, 100%, 253px);
+  justify-self: center;
 }

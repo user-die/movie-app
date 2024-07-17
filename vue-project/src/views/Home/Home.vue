@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="p-4">
     <Releases />
     <News />
     <MainSearch />

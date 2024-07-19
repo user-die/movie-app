@@ -8,8 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     Carousel: typeof import('./src/components/Carousel.vue')['default']
-    FavoriteButton: typeof import('./src/components/FavoriteButton.vue')['default']
-    FavoriteStarButton: typeof import('./src/components/FavoriteStarButton.vue')['default']
     FilmCard: typeof import('./src/components/FilmCard.vue')['default']
     FilmsList: typeof import('./src/components/FilmsList.vue')['default']
     Navbar: typeof import('./src/components/Navbar.vue')['default']

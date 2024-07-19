@@ -1,27 +1,33 @@
 <template>
-  <section class="row my-4 position-relative" v-if="props.films.length">
+  <section class="row my-4" v-if="props.films.length">
     <h2 class="text-danger mb-3 fs-1 fw-bold">{{ props.text }}</h2>
-    <button @click="x -= 450" class="position-absolute btn btn-danger left rounded-5">
-      <Left />
-    </button>
 
-    <section class="d-flex gap-4 overflow-hidden" ref="car">
-      <router-link
-        v-for="sequel in props.films"
-        :key="sequel.id"
-        :to="'/movie/' + sequel.id"
-        style="width: 120px"
-        class="text-white text-decoration-none"
-      >
-        <img :src="sequel.poster?.url || sequel?.image" alt="" class="actorsImage rounded-4" />
-        <p class="mt-1 mb-0 text-center">{{ sequel.name }}</p>
-        <p class="m-0 text-center">{{ sequel.year }}</p>
-      </router-link>
-    </section>
+    <div class="d-flex align-items-center gap-2">
+      <button @click="x -= 450" class="btn h40 w40 btn-danger left rounded-5">
+        <Left />
+      </button>
 
-    <button @click="x += 450" class="position-absolute btn btn-danger right rounded-5">
-      <Right />
-    </button>
+      <section class="d-flex gap-3 overflow-hidden align-items-normal list136" ref="car">
+        <router-link
+          v-for="sequel in props.films"
+          :key="sequel.id"
+          :to="'/movie/' + sequel.id"
+          class="text-white text-decoration-none w120"
+        >
+          <img
+            :src="sequel.poster?.url || sequel?.image"
+            alt="постер фильма"
+            class="actorsImage rounded-4"
+          />
+          <p class="mt-1 mb-0 text-center">{{ sequel.name }}</p>
+          <p class="m-0 text-center">{{ sequel.year }}</p>
+        </router-link>
+      </section>
+
+      <button @click="x += 450" class="btn h40 w40 btn-danger right rounded-5">
+        <Right />
+      </button>
+    </div>
   </section>
 </template>
 
@@ -44,17 +50,6 @@ const props = defineProps({
 
 <style scoped>
 .btn {
-  top: 35%;
-  width: 40px;
-  height: 40px;
   padding: 4px;
-}
-
-.right {
-  right: -30px;
-}
-
-.left {
-  left: -30px;
 }
 </style>

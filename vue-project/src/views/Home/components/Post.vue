@@ -1,7 +1,12 @@
 <template>
-  <article bg-variant="info" class="bg-info p-3 rounded-5" style="height: 400px; width: 400px">
+  <a
+    target="blank"
+    :href="post.url"
+    bg-variant="info"
+    class="bg-info p-3 rounded-5 text-decoration-none h400 w400"
+  >
     <div class="card-body p-0 d-grid h-100 align-content-between">
-      <p class="fs-4 text-center text-dark">{{ post.title }}</p>
+      <p class="fs-4 text-center text-dark m-0" style="line-height: 30px">{{ post.title }}</p>
 
       <img
         :src="post.imageUrl.replace('orig', '320x180')"
@@ -10,7 +15,7 @@
         alt="@/assets/alt.png"
       />
     </div>
-  </article>
+  </a>
 </template>
 
 <script>
@@ -21,10 +26,9 @@ export default {
       description: String,
       imageUrl: String,
       id: Number,
-      publishedAd: String
+      publishedAd: String,
+      url: String
     }
   }
 }
 </script>
-
-<style scoped></style>

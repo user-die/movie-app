@@ -1,7 +1,7 @@
 <template>
   <article>
     <div class="row align-items-start">
-      <img :src="film.poster" alt="" class="rounded-5" style="width: 300px" />
+      <img :src="film.poster" alt="" class="rounded-5 w300" />
 
       <div class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8 col-xxl-9">
         <div class="d-flex align-items-center gap-5">
@@ -23,19 +23,20 @@
         <div class="row">
           <article class="d-flex gap-3 col-7">
             <article>
-              <p class="mb-2">Год</p>
-              <p class="mb-2">Страна</p>
-              <p class="mb-2">Жанры</p>
-              <p class="mb-2">Время</p>
-              <p class="mb-2">Бюджет</p>
-              <p class="d-flex flex-column mb-2">
-                Сборы: <span class="mx-3">в мире</span> <span class="mx-3">в России</span>
-                <span class="mx-3">в США</span>
+              <p v-if="props?.film?.year" class="mb-2">Год</p>
+              <p v-if="props?.film?.countries" class="mb-2">Страна</p>
+              <p v-if="props?.film?.genres" class="mb-2">Жанры</p>
+              <p v-if="props?.film?.movieLength" class="mb-2">Время</p>
+              <p v-if="props.film?.budget" class="mb-2">Бюджет</p>
+              <p v-if="props.film?.fees" class="d-flex flex-column mb-2">
+                Сборы: <span v-if="props.film?.fees?.world?.value" class="mx-3">в мире</span>
+                <span v-if="props.film?.fees?.russia?.value" class="mx-3">в России</span>
+                <span v-if="props.film?.fees?.usa?.value" class="mx-3">в США</span>
               </p>
-              <p class="mb-2">Возраст</p>
-              <p class="mb-2">Режиссер</p>
-              <p class="mb-2">Премьера в мире</p>
-              <p class="mb-2">Премьера в России</p>
+              <p v-if="props.film?.ageRating" class="mb-2">Возраст</p>
+              <p v-if="props.film?.director" class="mb-2">Режиссер</p>
+              <p v-if="props.film?.premiere?.world" class="mb-2">Премьера в мире</p>
+              <p v-if="props.film?.premiere?.russia" class="mb-2">Премьера в России</p>
             </article>
 
             <section>

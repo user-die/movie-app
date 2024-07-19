@@ -41,6 +41,8 @@
 
       <Staff :staff="dubbingActors" text="Актёры дубляжа" />
 
+      <Awards :id="id" />
+
       <Cadrs :id="id" />
 
       <OtherFilms
@@ -71,22 +73,8 @@ import About from './components/About.vue'
 import OtherFilms from './components/OtherFilms.vue'
 import Facts from './components/Facts.vue'
 import Watch from './components/Watch.vue'
+import Awards from './components/Awards.vue'
 import { useHead } from '@unhead/vue'
-
-useHead({
-  title: computed(() => film?.data?.name || film?.data?.alternativeName),
-  meta: [
-    {
-      name: 'description',
-      content: computed(
-        () =>
-          film?.data?.name ||
-          film?.data?.alternativeName +
-            '. Информация о фильме: актёры, режиссёр, продюссеры, стаф, кадры, бюджет, хронометраж, сиквелы и приквелы, похожие фильмы, где посмотреть, интересные факты, ошибки и ляпы'
-      )
-    }
-  ]
-})
 
 const isError = ref(false)
 const errorMessage = ref()
@@ -100,7 +88,6 @@ var film = reactive({
 var actors = computed(() => film?.data?.persons?.filter((el) => el.profession === 'актеры'))
 var staff = computed(() => film?.data?.persons?.filter((el) => el.profession !== 'актеры'))
 
-var trailers = computed(() => film?.data?.videos)
 var dubbingActors = computed(() => staff?.value?.filter((el) => el.profession === 'актеры дубляжа'))
 
 var sorderStaff = computed(() =>
@@ -143,6 +130,21 @@ var getFilm = async (id) => {
 
   film.data = response.data
 }
+
+useHead({
+  title: computed(() => film?.data?.name || film?.data?.alternativeName),
+  meta: [
+    {
+      name: 'description',
+      content: computed(
+        () =>
+          film?.data?.name ||
+          film?.data?.alternativeName +
+            '. Информация о фильме: актёры, режиссёр, продюссеры, стаф, кадры, бюджет, хронометраж, сиквелы и приквелы, похожие фильмы, где посмотреть, интересные факты, ошибки и ляпы'
+      )
+    }
+  ]
+})
 
 watch(route, (newValue) => {
   id.value = newValue.params.id

@@ -34,11 +34,11 @@ const useStarsStore = defineStore('StarsStore', () => {
     stars.data = JSON.parse(starsOnLocalStorage)
   }
 
-  const addFavorite = (id) => {
+  const addWish = (id) => {
     stars.data.push(id)
   }
 
-  const deleteFavorite = (id) => {
+  const deleteWish = (id) => {
     stars.data = stars.data.filter((element) => element !== id)
   }
 
@@ -46,7 +46,7 @@ const useStarsStore = defineStore('StarsStore', () => {
     deep: true
   })
 
-  return { stars, addFavorite, deleteFavorite }
+  return { stars, addWish, deleteWish }
 })
 
 const useFavoritesStore = defineStore('FavoritesStore', () => {
@@ -58,11 +58,11 @@ const useFavoritesStore = defineStore('FavoritesStore', () => {
     favorites.data = JSON.parse(favoriteOnLocalStorage)
   }
 
-  const addFavorite = (id) => {
+  const addWish = (id) => {
     favorites.data.push(id)
   }
 
-  const deleteFavorite = (id) => {
+  const deleteWish = (id) => {
     favorites.data = favorites.data.filter((element) => element !== id)
   }
 
@@ -70,7 +70,7 @@ const useFavoritesStore = defineStore('FavoritesStore', () => {
     deep: true
   })
 
-  return { favorites, addFavorite, deleteFavorite }
+  return { favorites, addWish, deleteWish }
 })
 
 const stores = {

@@ -2,7 +2,7 @@
   <button
     @click="(event) => click(props.id, event)"
     class="btn border-danger"
-    :class="(item && 'bg-danger') || 'bg-outline-danger'"
+    :class="(item && 'bg-danger text-white') || 'bg-outline-danger text-danger'"
   >
     {{ props.text }}
     <Bookmarks v-if="props.type === 1" :class="(item && 'text-dark') || 'text-danger'" />
@@ -25,7 +25,7 @@ const props = defineProps({
   type: Number
 })
 
-const listStore = store['wishlist']()
+const listStore = store[props.list]()
 
 var item = computed(() => listStore[props.list].data.includes(props.id))
 
@@ -35,5 +35,3 @@ var click = function (id, event) {
   item.value ? listStore.deleteWish(id) : listStore.addWish(id)
 }
 </script>
-
-<style scoped></style>

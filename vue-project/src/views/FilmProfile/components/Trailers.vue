@@ -1,31 +1,34 @@
 <template>
   <section>
-    <h2 class="text-danger">Трейлеры</h2>
-    <BCarousel indicators controls>
-      <BCarouselSlide v-for="trailer in filteredTrailers" :key="trailer.name">
-        <iframe
-          width="1280"
-          height="544"
-          :src="trailer.url"
-          title="Начало (Inception) - Русский трейлер"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-        ></iframe>
-      </BCarouselSlide>
-    </BCarousel>
+    <h2 class="text-danger">Трейлер</h2>
   </section>
 </template>
 
 <script setup>
-import { BCarousel, BCarouselSlide } from 'bootstrap-vue-next'
+import axios from 'axios'
+import options from '@/options.json'
+import { onMounted, reactive, watch } from 'vue'
 
 const props = defineProps({
-  trailers: Array
+  id: Number
 })
 
-var filteredTrailers = props.trailers.filter((el) => el.site === 'youtube')
-</script>
+const trailers = reactive({ data: [] })
 
-<style scoped></style>
+var getTrailers = async (id) => {
+  var response = await axios.get(
+    `https://kinopoiskapiunofficial.tech/api/v2.2/films/${id}/videos`,
+    options['request2']
+  )
+
+  trailers.data = response.data.items
+}
+
+watch(props, () => {
+  getTrailers(props.id)
+})
+
+onMounted(() => {
+  getTrailers(props.id)
+})
+</script>

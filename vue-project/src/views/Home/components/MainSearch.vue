@@ -1,5 +1,5 @@
 <template>
-  <section class="mx-auto my-3" style="width: round(down, 100%, 286px)">
+  <section class="mx-auto my-3 list253">
     <h2 class="fs-1 text-danger">Подобрать фильм</h2>
 
     <div class="row mb-3">
@@ -88,25 +88,85 @@
           max="2050"
         />
       </div>
+    </div>
 
+    <div class="row mb-3">
       <div class="col-2">
         <button class="btn btn-primary" @click="searchFilm">Найти</button>
       </div>
     </div>
 
-    <article class="grid" style="width: round(down, 100%, 286px)">
+    <article class="grid list253">
       <p v-if="isSearch">Поиск ...</p>
-      <FilmCard v-for="film in films" :key="film.id" :item="film" style="width: 270px" />
+      <FilmCard v-for="film in films" :key="film.id" :item="film" class="w270" />
     </article>
 
-    <BPagination
-      class="mb-0 mt-3"
+    <div
       v-if="this.films.length > 0"
-      v-model="currentPage"
-      :total-rows="ex2Rows"
-      :per-page="ex2PerPage"
-      first-number
-    />
+      class="d-flex w-100 overflow-hidden justify-content-center mt-3 gap-2"
+    >
+      <button class="btn btn-outline-primary" @click="this.currentPage = 1">
+        {{ '<<' }}
+      </button>
+
+      <button class="btn btn-outline-primary" @click="this.currentPage -= 1">
+        {{ '<' }}
+      </button>
+
+      <button
+        v-if="currentPage !== 1"
+        class="btn btn-outline-primary"
+        @click="this.currentPage = 1"
+      >
+        {{ 1 }}
+      </button>
+
+      <button v-if="![1, 2, 3, 4].includes(currentPage)" class="btn btn-outline-primary">
+        {{ '...' }}
+      </button>
+
+      <button
+        class="btn btn-outline-primary"
+        v-for="btn in buttons"
+        :key="btn"
+        :class="{
+          'btn-primary text-white': currentPage === btn
+        }"
+        @click="this.currentPage = btn"
+      >
+        {{ btn }}
+      </button>
+
+      <button
+        v-if="
+          ![
+            this.totalPages,
+            this.totalPages - 1,
+            this.totalPages - 2,
+            this.totalPages - 3
+          ].includes(currentPage)
+        "
+        class="btn btn-outline-primary"
+      >
+        {{ '...' }}
+      </button>
+
+      <button
+        v-if="currentPage !== totalPages"
+        class="btn btn-outline-primary"
+        @click="this.currentPage = this.totalPages"
+      >
+        {{ this.totalPages }}
+      </button>
+
+      <button class="btn btn-outline-primary" @click="this.currentPage += 1">
+        {{ '>' }}
+      </button>
+
+      <button class="btn btn-outline-primary" @click="this.currentPage = this.totalPages">
+        {{ '>>' }}
+      </button>
+    </div>
   </section>
 </template>
 
@@ -114,11 +174,10 @@
 import axios from 'axios'
 import options from '@/options.json'
 import FilmCard from '@/components/FilmCard.vue'
-import { BPagination } from 'bootstrap-vue-next'
+import { computed } from 'vue'
 
 export default {
   components: {
-    BPagination,
     FilmCard
   },
   data() {
@@ -127,7 +186,16 @@ export default {
       films: [],
       currentPage: 1,
       ex2PerPage: 1,
-      ex2Rows: 100,
+      totalPages: 0,
+      buttons: computed(() => [
+        ...Array.from({ length: 2 }, (_, i) => this.currentPage - 1 - i)
+          .reverse()
+          .filter((el) => el > 1),
+        this.currentPage,
+        ...Array.from({ length: 2 }, (_, i) => this.currentPage + 1 + i).filter(
+          (el) => el < this.totalPages
+        )
+      ]),
 
       genresInput: null,
       typeInput: null,
@@ -191,22 +259,30 @@ export default {
         options['request1']
       )
 
+      this.totalPages = response.data.pages
+
       this.films = response.data.docs.map(
         (element) =>
           (element = {
-            id: element.id,
-            name: element.name || element.alternativeName,
-            image: element.poster?.url?.replace('orig', 'x390'),
-            genres: element.genres.map((el) => el.name),
-            year: element.year,
+            id: element?.id,
+            name: element?.name || element?.alternativeName,
+            image: element?.poster?.url?.replace('orig', 'x390'),
+            genres: element?.genres?.map((el) => el.name),
+            year: element?.year,
             rating: {
-              kp: element.rating.kp,
-              imdb: element.rating.imdb
+              kp: element?.rating?.kp,
+              imdb: element?.rating?.imdb
             }
           })
       )
 
       this.isSearch = false
+    }
+  },
+  watch: {
+    currentPage: function () {
+      this.films = []
+      this.searchFilm()
     }
   }
 }
@@ -217,5 +293,9 @@ export default {
   display: grid;
   gap: 1rem;
   grid-template-columns: repeat(auto-fill, 270px);
+}
+
+.list {
+  width: round(down, 100%, 286px);
 }
 </style>

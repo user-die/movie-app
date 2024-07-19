@@ -3,7 +3,7 @@
     ref="nav"
     class="d-flex flex-row w-100 p-3 justify-content-evenly mainBg position-relavite align-items-center"
   >
-    <div class="text-danger d-flex align-items-center gap-2">
+    <div class="text-danger d-flex gap-2">
       <Camera class="fs-3" />
       <h2 class="m-0 text-white">Movie App</h2>
     </div>
@@ -16,16 +16,14 @@
       </button>
 
       <div
-        class="d-flex flex-column align-items-center gap-3 overflow-hidden flex-wrap"
-        style="height: 40px"
+        class="h40 d-flex flex-column align-items-center gap-3 overflow-hidden flex-wrap"
         ref="navLinks"
       >
         <router-link
           v-for="route in routes"
           :key="route.name"
           :to="'/' + route.route"
-          style="width: 170px"
-          class="btn btn-dark border border-danger text-white text-decoration-none d-flex justify-content-center gap-3 px-4 align-items-center"
+          class="btn btn-dark border border-danger text-white text-decoration-none d-flex justify-content-center gap-3 px-4 align-items-center w170"
           ><component :is="route.icon" class="text-danger" />
           <span>{{ route.name }}</span>
         </router-link>
@@ -39,7 +37,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useScroll } from '@vueuse/core'
 import Camera from '~icons/bi/camera-reels'
 import Film from '~icons/bi/film'
@@ -65,5 +63,3 @@ const routes = [
   { route: 'wishlist', name: 'Закладки', icon: Bookmarks }
 ]
 </script>
-
-<style scoped></style>

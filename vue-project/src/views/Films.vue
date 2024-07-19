@@ -149,5 +149,3 @@ watch(route, () => {
   getAllFilms()
 })
 </script>
-
-<style scoped></style>

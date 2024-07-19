@@ -2,23 +2,15 @@
   <section v-if="cadrs.data">
     <h2 class="text-danger mb-3 fs-1 fw-bold">Кадры</h2>
 
-    <BCarousel
-      controls
-      indicators
-      ride="carousel"
-      class="rounded-5"
-      style="width: 800px; height: 400px; border-radius: 20px"
-    >
-      <BCarouselSlide v-for="cadr in cadrs.data" :key="cadr.id">
-        <template #img>
-          <img
-            :src="cadr.previewUrl"
-            alt=""
-            style="height: 400px; object-fit: cover; width: 100%"
-          />
-        </template>
-      </BCarouselSlide>
-    </BCarousel>
+    <Carousel>
+      <img
+        v-for="cadr in cadrs.data"
+        :key="cadr.id"
+        :src="cadr.previewUrl"
+        alt=""
+        class="rounded-4 h400 w-100 object-fit-cover"
+      />
+    </Carousel>
   </section>
 </template>
 
@@ -26,7 +18,7 @@
 import axios from 'axios'
 import options from '../../../options.json'
 import { onMounted, reactive, watch } from 'vue'
-import { BCarousel, BCarouselSlide } from 'bootstrap-vue-next'
+import Carousel from '@/components/Carousel.vue'
 
 var cadrs = reactive({
   data: []
@@ -53,5 +45,3 @@ onMounted(() => {
   getPhotos(props.id)
 })
 </script>
-
-<style scoped></style>

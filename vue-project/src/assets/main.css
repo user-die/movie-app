@@ -63,10 +63,6 @@ h1 {
   color: white !important;
 }
 
-.h250 {
-  height: 250px;
-}
-
 .mainBg {
   background: rgb(18, 18, 18);
 }
@@ -75,11 +71,39 @@ h1 {
   min-height: 100vh;
 }
 
-.w253 {
-  width: 253px;
-}
-
-.list {
+.list253 {
   width: round(down, 100%, 253px);
   justify-self: center;
+}
+
+.list286 {
+  width: calc(-16px + round(down, 100%, 286px));
+}
+
+/*
+.navlist {
+
+  width: calc(-16px + round(down, 100%, 186px));
+}
+*/
+
+.object-fit-cover {
+  object-fit: cover;
+}
+
+.list136 {
+  width: round(down, 100%, 136px);
+}
+
+.list128 {
+  width: round(down, 100%, 128px);
+}
+
+.list253 {
+  width: round(down, 100%, 253px);
+  justify-self: center;
+}
+
+.mh100 {
+  min-height: 100vh;
 }

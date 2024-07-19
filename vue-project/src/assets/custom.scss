@@ -8,4 +8,5 @@ $theme-colors: (
   'dark': rgb(33, 37, 41)
 );
 
+@import 'variables';
 @import 'node_modules/bootstrap/scss/bootstrap';

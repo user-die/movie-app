@@ -1,0 +1,35 @@
+$height: (40, 250, 400, 832);
+
+@mixin height($height) {
+  @each $h in $height {
+    .h#{$h} {
+      height: $h + px !important;
+    }
+  }
+}
+
+@include height($height);
+
+$width: (40, 90, 120, 170, 253, 270, 300, 400);
+
+@mixin width($width) {
+  @each $w in $width {
+    .w#{$w} {
+      width: $w + px !important;
+    }
+  }
+}
+
+@include width($width);
+
+$list: (128, 136, 253, 286);
+
+@mixin list($list) {
+  @each $list in $list {
+    .list#{$list} {
+      width: round(down, 100%, $list + px);
+    }
+  }
+}
+
+@include list($list);

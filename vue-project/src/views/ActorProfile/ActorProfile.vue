@@ -5,12 +5,7 @@
 
   <article v-else class="text-white container mainBg p-4">
     <div class="row gap-2">
-      <img
-        :src="actor.data.photo || altImage"
-        :alt="altImage"
-        class="rounded-5"
-        style="width: 300px"
-      />
+      <img :src="actor.data.photo || altImage" :alt="altImage" class="rounded-5 w300" />
 
       <About :actor="actor?.data" class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8 col-xxl-9" />
     </div>
@@ -132,5 +127,3 @@ onMounted(() => {
   getAwards(id.value)
 })
 </script>
-
-<style scoped></style>

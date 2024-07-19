@@ -5,6 +5,7 @@
 </template>
 
 <script setup>
+import './assets/main.css'
 import Navbar from './components/Navbar.vue'
 </script>
 

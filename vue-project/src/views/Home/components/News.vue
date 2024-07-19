@@ -7,9 +7,8 @@
     <section style="width: calc(-16px + round(down, 100%, 416px))">
       <h2 class="text-danger fs-1">Последние новости</h2>
       <article
-        class="d-flex align-content-center flex-wrap flex-column overflow-hidden gap-3"
+        class="d-flex align-content-center flex-wrap flex-column overflow-hidden gap-3 h400"
         ref="carousel"
-        style="height: 400px"
       >
         <Post
           v-for="post in posts"
@@ -19,7 +18,8 @@
             description: post.description,
             imageUrl: post.imageUrl,
             id: post.kinopoiskId,
-            publishedAd: post.publishedAd
+            publishedAd: post.publishedAd,
+            url: post.url
           }"
         />
       </article>
@@ -86,5 +86,3 @@ export default {
   }
 }
 </script>
-
-<style scoped></style>

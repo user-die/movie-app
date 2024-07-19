@@ -3,7 +3,7 @@
     <p class="fs-1 text-center">{{ errorMessage }}</p>
   </div>
 
-  <div v-else class="container mainBg p-4 d-flex flex-column justify-content-between mh">
+  <div v-else class="container mainBg p-4 d-flex flex-column justify-content-between mh100">
     <main class="d-grid">
       <h2 class="d-flex align-items-center gap-2 fs-1 fw-bold text-danger">
         <span>250 Лучших</span>
@@ -31,7 +31,7 @@
         </select>
       </div>
 
-      <article class="row row-gap-3 list">
+      <article class="row row-gap-3 list253">
         <FilmCard v-for="film in films.data" :key="film.id" :item="film" class="w253"></FilmCard>
       </article>
     </main>
@@ -140,7 +140,7 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style>
 option {
   font-family: Nunito;
 }

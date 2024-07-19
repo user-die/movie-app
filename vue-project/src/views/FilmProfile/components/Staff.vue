@@ -20,29 +20,24 @@
       :class="{
         'flex-wrap': actorsToggle,
         'overflow-hidden': !actorsToggle,
-        'd-flex gap-4 align-items-start': true
+        'd-flex row-gap-0 align-items-start p-0 column-gap-2 m-auto list128': true
       }"
-      style="width: round(down, 100%, 144px)"
     >
       <router-link
-        class="d-flex gap-1 justify-content-center flex-column align-items-center text-white text-decoration-none text-center"
+        class="d-flex gap-1 justify-content-center flex-column align-items-center text-white text-decoration-none text-center w120"
         v-for="actor in props.staff"
         :key="actor.id"
         :to="'/actor/' + actor.id"
-        style="width: 120px"
       >
         <img
-          :src="
-            `https://image.openmoviedb.com/kinopoisk-st-images//actor_iphone/iphone90_${actor.id}.jpg` ||
-            altImage
-          "
-          :alt="altImage"
+          :src="`https://image.openmoviedb.com/kinopoisk-st-images//actor_iphone/iphone90_${actor.id}.jpg`"
+          alt="Портрет актёра"
           class="actorsImage rounded-4"
         />
-        <p class="m-0" style="width: 120px">{{ actor.name }}</p>
-        <p>{{ actor?.description }}</p>
+        <p class="m-0 w120">{{ actor.name }}</p>
+        <p v-if="actor?.description">{{ actor?.description }}</p>
 
-        <p class="m-0 text-warning" style="width: 120px">
+        <p class="m-0 text-warning w120">
           <span v-for="prof in actor?.professions" :key="prof">{{ prof.slice(0, -1) + ' ' }}</span>
         </p>
       </router-link>
@@ -64,5 +59,3 @@ const props = defineProps({
   prof: Boolean
 })
 </script>
-
-<style scoped></style>

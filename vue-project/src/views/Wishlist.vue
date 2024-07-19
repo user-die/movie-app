@@ -1,5 +1,5 @@
 <template>
-  <div class="container mainBg p-4 mh">
+  <div class="container mainBg p-4 mh100">
     <div class="mx-auto d-grid">
       <h2 class="fs-1 fw-bold text-danger">Мои закладки</h2>
 
@@ -32,7 +32,7 @@
         </div>
       </div>
 
-      <article class="row row-gap-3 list">
+      <article class="row row-gap-3 list253">
         <FilmCard v-for="film in searchedFilms" :key="film.id" :item="film" class="w253"></FilmCard>
 
         <div
@@ -182,6 +182,8 @@ watch(
   props,
   (newValue) => {
     listStore = store[newValue.list]()
+    films.data = []
+    getFilms()
   },
   { deep: true }
 )
@@ -190,18 +192,3 @@ onMounted(() => {
   getFilms()
 })
 </script>
-
-<style scoped>
-.mh {
-  min-height: 100vh;
-}
-
-.w253 {
-  width: 253px;
-}
-
-.list {
-  width: round(down, 100%, 253px);
-  justify-self: center;
-}
-</style>

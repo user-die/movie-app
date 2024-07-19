@@ -93,5 +93,3 @@ onMounted(() => {
   getFacts(props.id)
 })
 </script>
-
-<style scoped></style>

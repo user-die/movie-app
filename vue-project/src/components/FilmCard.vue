@@ -1,8 +1,7 @@
 <template>
   <router-link :to="'/movie/' + item?.id" class="text-decoration-none text-white">
     <article
-      class="card rounded-5 bg-light-subtle"
-      style="height: 400px"
+      class="card rounded-5 bg-light-subtle h400"
       :style="backgroundStyles(item.image || altImage)"
     >
       <div
@@ -57,5 +56,3 @@ defineProps({
   item: Object
 })
 </script>
-
-<style scoped></style>

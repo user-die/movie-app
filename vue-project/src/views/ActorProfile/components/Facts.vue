@@ -38,5 +38,3 @@ defineProps({
   facts: Array
 })
 </script>
-
-<style scoped></style>

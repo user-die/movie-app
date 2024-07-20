@@ -1,4 +1,3 @@
-console.log(meta.env.VITE_VERCEL_key1)
 console.log(process.env.VITE_VERCEL_key1)
 console.log(import.meta.env.VITE_VERCEL_key1)
 console.log(import.meta.process.env.VITE_VERCEL_key1)

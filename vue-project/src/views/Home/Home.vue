@@ -28,9 +28,6 @@ export default {
     News,
     Releases,
     MainSearch
-  },
-  mounted() {
-    console.log(process.env.key1)
   }
 }
 </script>

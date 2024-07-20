@@ -30,7 +30,7 @@
 
 <script>
 import axios from 'axios'
-import options from '@/options.json'
+import options from '@/options.js'
 import Post from './Post.vue'
 import { useScroll } from '@vueuse/core'
 import Left from '~icons/bi/caret-left-fill'

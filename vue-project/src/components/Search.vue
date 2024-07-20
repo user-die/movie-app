@@ -56,7 +56,7 @@
 
 <script setup>
 import axios from 'axios'
-import options from '@/options.json'
+import options from '@/options.js'
 import Search from '~icons/bi/search'
 import { onMounted, reactive, ref, watch } from 'vue'
 

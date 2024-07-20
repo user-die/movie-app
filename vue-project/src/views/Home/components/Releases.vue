@@ -8,7 +8,7 @@
 
 <script>
 import axios from 'axios'
-import options from '@/options.json'
+import options from '@/options.js'
 import FilmsTable from './FilmsTable.vue'
 
 export default {

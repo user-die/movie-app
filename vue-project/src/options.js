@@ -1,6 +1,5 @@
-console.log(process.env.VITE_VERCEL_key1)
-console.log(import.meta.env.VITE_VERCEL_key1)
-console.log(import.meta.process.VITE_VERCEL_key1)
+console.log(process.env.VERCEL_key1)
+console.log(process.env.key1)
 
 export default {
   request1: {

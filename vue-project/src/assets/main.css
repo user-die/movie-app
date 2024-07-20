@@ -53,11 +53,6 @@ h1 {
   opacity: 1; /* Firefox */
 }
 
-.form-control:-ms-input-placeholder {
-  /* Internet Explorer 10-11 */
-  color: white !important;
-}
-
 .form-control::-ms-input-placeholder {
   /* Microsoft Edge */
   color: white !important;
@@ -71,15 +66,6 @@ h1 {
   min-height: 100vh;
 }
 
-.list253 {
-  width: round(down, 100%, 253px);
-  justify-self: center;
-}
-
-.list286 {
-  width: calc(-16px + round(down, 100%, 286px));
-}
-
 /*
 .navlist {
 
@@ -89,19 +75,6 @@ h1 {
 
 .object-fit-cover {
   object-fit: cover;
-}
-
-.list136 {
-  width: round(down, 100%, 136px);
-}
-
-.list128 {
-  width: round(down, 100%, 128px);
-}
-
-.list253 {
-  width: round(down, 100%, 253px);
-  justify-self: center;
 }
 
 .mh100 {

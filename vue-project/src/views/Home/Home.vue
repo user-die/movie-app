@@ -1,7 +1,7 @@
 <template>
   <main class="p-4">
-    <Releases />
     <News />
+    <Releases />
     <MainSearch />
   </main>
 </template>

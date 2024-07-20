@@ -20,7 +20,7 @@
       :class="{
         'flex-wrap': actorsToggle,
         'overflow-hidden': !actorsToggle,
-        'd-flex row-gap-0 align-items-start p-0 column-gap-2 m-auto list128': true
+        'd-flex row-gap-0 align-items-start p-0 column-gap-2 m-auto list128px': true
       }"
     >
       <router-link

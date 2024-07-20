@@ -7,14 +7,14 @@
         placeholder="Введите запрос..."
         class="text-white text-decoration-none mainBg"
       />
-      <button @click="searchButton" type="button" class="bg18">
+      <span class="bg18 p-1">
         <Search class="text-white" />
-      </button>
+      </span>
     </div>
 
     <div class="dropdown w-100">
       <div class="dropdown-menu w-100 p-2 menu bg-dark" ref="drop" :class="{ 'd-block': show }">
-        <p class="text-center fs-4 m-0">Фильмы и сериалы</p>
+        <p class="text-center fs-4 m-0 text-white">Фильмы и сериалы</p>
         <ul class="list-unstyled">
           <li v-for="film in resultFilms.data.slice(0, 5)" :key="film.id" class="searchItem">
             <router-link
@@ -34,7 +34,7 @@
           </li>
         </ul>
 
-        <p class="text-center fs-4 m-0">Актёры и актрисы</p>
+        <p class="text-center fs-4 m-0 text-white">Актёры и актрисы</p>
         <ul class="list-unstyled">
           <li v-for="actor in resultActors.data.slice(0, 5)" :key="actor.id" class="searchItem">
             <router-link
@@ -58,7 +58,7 @@
 import axios from 'axios'
 import options from '@/options.json'
 import Search from '~icons/bi/search'
-import { computed, onMounted, reactive, ref, watch } from 'vue'
+import { onMounted, reactive, ref, watch } from 'vue'
 
 const drop = ref(null)
 const show = ref(false)
@@ -88,7 +88,7 @@ var getArtistsQuery = async (query) => {
   show.value = true
 }
 
-var getQuery = async (query) => {
+var getFilms = async (query) => {
   let response = await axios(
     `https://kinopoiskapiunofficial.tech/api/v2.1/films/search-by-keyword?keyword=${encodeURI(query)}&page=1`,
     options['request2']
@@ -97,9 +97,9 @@ var getQuery = async (query) => {
   resultFilms.data = response.data.films.map(
     (element) =>
       (element = {
-        id: element?.kinopoiskId,
+        id: element?.filmId,
         name: element?.nameRu || element?.nameOriginal,
-        image: `https://avatars.mds.yandex.net/get-kinopoisk-image/${element.kinopoiskId}/b8141e34-e1dc-45e0-8c2a-f63780cba3b8/90`,
+        image: element?.posterUrlPreview,
         year: element?.year,
         rating: {
           kp: element?.ratingKinopoisk,
@@ -111,13 +111,8 @@ var getQuery = async (query) => {
   show.value = true
 }
 
-var searchButton = () => {
-  getQuery(search.value)
-  getArtistsQuery(search.value)
-}
-
 watch(search, async () => {
-  getQuery(search.value)
+  getFilms(search.value)
   getArtistsQuery(search.value)
 })
 

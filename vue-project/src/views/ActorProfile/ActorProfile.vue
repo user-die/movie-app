@@ -99,7 +99,10 @@ var getActor = async (id) => {
     `https://api.kinopoisk.dev/v1.4/person/${id}`,
     options['request1']
   ).catch((error) => {
-    errorMessage.value = error.response.data.message
+    errorMessage.value = error.response.data.message.replace(
+      "Чтобы получить больше запросов, обновите тариф в боте @kinopoiskdev_bot'",
+      ''
+    )
     isError.value = true
   })
 

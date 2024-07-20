@@ -1,5 +1,6 @@
 <template>
   <button
+    aria-label="Add to favorites"
     @click="(event) => click(props.id, event)"
     class="btn border-danger"
     :class="(item && 'bg-danger text-white') || 'bg-outline-danger text-danger'"

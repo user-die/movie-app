@@ -22,12 +22,13 @@ $width: (40, 90, 120, 170, 253, 270, 300, 400);
 
 @include width($width);
 
-$list: (128, 136, 253, 286);
+$list: (128px, 136px, 253px, 286px);
 
 @mixin list($list) {
   @each $list in $list {
     .list#{$list} {
-      width: round(down, 100%, $list + px);
+      width: round(down, 100%, $list);
+      justify-self: center;
     }
   }
 }

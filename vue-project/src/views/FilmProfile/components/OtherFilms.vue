@@ -7,7 +7,7 @@
         <Left />
       </button>
 
-      <section class="d-flex gap-3 overflow-hidden align-items-normal list136" ref="car">
+      <section class="d-flex gap-3 overflow-hidden align-items-normal list136px" ref="car">
         <router-link
           v-for="sequel in props.films"
           :key="sequel.id"
@@ -15,9 +15,10 @@
           class="text-white text-decoration-none w120"
         >
           <img
-            :src="sequel.poster?.url || sequel?.image"
+            :src="sequel.poster?.previewUrl.replace('1000', '120') || sequel?.image"
             alt="постер фильма"
             class="actorsImage rounded-4"
+            width="120px"
           />
           <p class="mt-1 mb-0 text-center">{{ sequel.name }}</p>
           <p class="m-0 text-center">{{ sequel.year }}</p>

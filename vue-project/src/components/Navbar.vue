@@ -10,8 +10,43 @@
 
     <Search />
 
-    <div class="d-flex flex-row gap-2" :class="nav?.offsetWidth < 1700 && 'w-50'">
-      <button v-if="nav?.offsetWidth < 1700" @click="x -= 186" class="btn btn-danger rounded-5">
+    <div class="dropdown">
+      <button
+        aria-label="expand navigation list"
+        class="btn btn-danger"
+        @click="show = !show"
+        v-if="nav?.offsetWidth < 1000"
+      >
+        <List />
+      </button>
+
+      <div
+        class="dropdown-menu position-absolute end-0 bg-dark p-1"
+        ref="drop"
+        :class="{ 'd-block': show }"
+      >
+        <router-link
+          v-for="route in routes"
+          :key="route.name"
+          :to="'/' + route.route"
+          class="btn my-1 btn-dark border border-danger text-white text-decoration-none d-flex justify-content-center gap-3 px-4 align-items-center w170"
+          ><component :is="route.icon" class="text-danger" />
+          <span>{{ route.name }}</span>
+        </router-link>
+      </div>
+    </div>
+
+    <div
+      class="d-flex flex-row gap-2"
+      :class="nav?.offsetWidth < 1700 && 'w-50'"
+      v-if="nav?.offsetWidth > 1000"
+    >
+      <button
+        aria-label="move left between navigation links"
+        v-if="nav?.offsetWidth < 1700"
+        @click="x -= 186"
+        class="btn btn-danger rounded-5"
+      >
         <Left />
       </button>
 
@@ -29,7 +64,12 @@
         </router-link>
       </div>
 
-      <button v-if="nav?.offsetWidth < 1700" @click="x += 186" class="btn btn-danger rounded-5">
+      <button
+        aria-label="move right between navigation links"
+        v-if="nav?.offsetWidth < 1700"
+        @click="x += 186"
+        class="btn btn-danger rounded-5"
+      >
         <Right />
       </button>
     </div>
@@ -47,9 +87,12 @@ import BookmarksStar from '~icons/bi/bookmark-star'
 import Search from './Search.vue'
 import Left from '~icons/bi/caret-left-fill'
 import Right from '~icons/bi/caret-right-fill'
+import List from '~icons/bi/list'
 
 var navLinks = ref(null)
 var nav = ref(null)
+const drop = ref(null)
+var show = ref(false)
 
 const behavior = 'smooth'
 const { x } = useScroll(navLinks, { behavior })

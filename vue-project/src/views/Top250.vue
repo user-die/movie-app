@@ -3,12 +3,14 @@
     <p class="fs-1 text-center">{{ errorMessage }}</p>
   </div>
 
-  <div v-else class="container mainBg p-4 d-flex flex-column justify-content-between mh100">
+  <div v-else class="container-lg mainBg p-4 d-flex flex-column justify-content-between mh100">
     <main class="d-grid">
       <h2 class="d-flex align-items-center gap-2 fs-1 fw-bold text-danger">
         <span>250 Лучших</span>
+        <label class="d-none" for="select-by-type"></label>
         <select
-          id="inp"
+          name="select-by-type"
+          id="select-by-type"
           v-model="type"
           class="form-select bg-dark border-danger w-25 text-danger fs-4"
         >
@@ -19,9 +21,10 @@
       </h2>
 
       <div class="d-flex align-items-center justify-content-start my-3 gap-3">
-        <label class="text-white fs-4" for="inp"> По версии</label>
+        <label class="text-white fs-4" for="select-by-version"> По версии</label>
         <select
-          id="inp"
+          name="select-by-version"
+          id="select-by-version"
           v-model="version"
           class="form-select bg-dark border-danger w-25 text-white"
         >
@@ -31,8 +34,10 @@
         </select>
       </div>
 
-      <article class="row row-gap-3 list253">
-        <FilmCard v-for="film in films.data" :key="film.id" :item="film" class="w253"></FilmCard>
+      <article class="row row-gap-3 list253px">
+        <transition-group name="filmList">
+          <FilmCard v-for="film in films.data" :key="film.id" :item="film" class="w253" />
+        </transition-group>
       </article>
     </main>
 
@@ -87,7 +92,10 @@ var getTop250 = async (page, version, list) => {
     `https://api.kinopoisk.dev/v1.4/movie?page=${page}&limit=20&sortField=rating.${version}&sortType=-1&lists=${list}`,
     options['request1']
   ).catch((error) => {
-    errorMessage.value = error.response.data.message
+    errorMessage.value = error.response.data.message.replace(
+      "Чтобы получить больше запросов, обновите тариф в боте @kinopoiskdev_bot'",
+      ''
+    )
     isError.value = true
   })
 
@@ -143,5 +151,15 @@ onMounted(() => {
 <style>
 option {
   font-family: Nunito;
+}
+
+.filmList-enter-active,
+.filmList-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.filmList-enter-from,
+.filmList-leave-to {
+  opacity: 0;
 }
 </style>

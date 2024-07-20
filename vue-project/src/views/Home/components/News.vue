@@ -1,15 +1,12 @@
 <template>
   <div class="d-flex align-items-center justify-content-center gap-2 my-3">
-    <button @click="leftX" class="btn btn-danger rounded-5">
+    <button aria-label="move content left" @click="leftX" class="btn btn-danger rounded-5">
       <Left />
     </button>
 
     <section style="width: calc(-16px + round(down, 100%, 416px))">
       <h2 class="text-danger fs-1">Последние новости</h2>
-      <article
-        class="d-flex align-content-center flex-wrap flex-column overflow-hidden gap-3 h400"
-        ref="carousel"
-      >
+      <article class="d-flex flex-wrap flex-column overflow-hidden gap-3 h400" ref="carousel">
         <Post
           v-for="post in posts"
           :key="post.kinopoiskId"
@@ -25,7 +22,7 @@
       </article>
     </section>
 
-    <button @click="rigthX" class="btn btn-danger rounded-5">
+    <button aria-label="move content right" @click="rigthX" class="btn btn-danger rounded-5">
       <Right />
     </button>
   </div>
@@ -55,14 +52,14 @@ export default {
       const behavior = 'smooth'
       let { x } = useScroll(this.$refs.carousel, { behavior })
 
-      x.value -= 1248
+      x.value -= 416
     },
 
     rigthX() {
       const behavior = 'smooth'
       let { x } = useScroll(this.$refs.carousel, { behavior })
 
-      x.value += 1248
+      x.value += 416
     },
 
     async getPosts() {

@@ -1,19 +1,8 @@
 <template>
-  <section class="mx-auto my-3 list253">
+  <section class="mx-auto my-3 d-grid">
     <h2 class="fs-1 text-danger">Подобрать фильм</h2>
 
     <div class="row mb-3">
-      <!-- 
-          <div class="col-5">
-        <label for="">Поиск по названию</label>
-        <BFormInput
-          id="input-default"
-          class="mt-2 bg-dark border-danger text-white"
-          v-model="search"
-        />
-      </div>
-        -->
-
       <div class="col-2">
         <label for="">Жанр</label>
         <select class="form-select mt-2 bg-dark border-danger text-white" v-model="genresInput">
@@ -35,16 +24,21 @@
 
     <div class="row mb-3">
       <div class="col-2">
-        <label for="">Рейтинг</label>
-        <select class="form-select mt-1 bg-dark border-danger text-white" v-model="rating">
+        <label for="rating">Рейтинг</label>
+        <select
+          id="rating"
+          class="form-select mt-1 bg-dark border-danger text-white"
+          v-model="rating"
+        >
           <option value="kp">Кинопоиск</option>
           <option value="imdb">IMDb</option>
         </select>
       </div>
 
       <div class="col-2">
-        <label for="">от</label>
+        <label for="ratingFrom">от</label>
         <input
+          id="ratingFrom"
           class="form-control mt-1 bg-dark border-danger text-white"
           v-model="ratingFrom"
           type="number"
@@ -54,9 +48,10 @@
       </div>
 
       <div class="col-2">
-        <label for="">до</label>
+        <label for="ratingUp">до</label>
 
         <input
+          id="ratingUp"
           class="form-control mt-1 bg-dark border-danger text-white"
           v-model="ratingUp"
           type="number"
@@ -68,8 +63,9 @@
 
     <div class="row mb-3">
       <div class="col-2">
-        <label for="">Год от</label>
+        <label for="yearFrom">Год от</label>
         <input
+          id="yearFrom"
           class="form-control mt-1 bg-dark border-danger text-white"
           v-model="yearFrom"
           type="number"
@@ -79,8 +75,9 @@
       </div>
 
       <div class="col-2">
-        <label for="">Год до</label>
+        <label for="yearUp">Год до</label>
         <input
+          id="yearUp"
           class="form-control mt-1 bg-dark border-danger text-white"
           v-model="yearUp"
           type="number"
@@ -92,11 +89,11 @@
 
     <div class="row mb-3">
       <div class="col-2">
-        <button class="btn btn-primary" @click="searchFilm">Найти</button>
+        <button aria-label="search films" class="btn btn-primary" @click="searchFilm">Найти</button>
       </div>
     </div>
 
-    <article class="grid list253">
+    <article class="grid list253px">
       <p v-if="isSearch">Поиск ...</p>
       <FilmCard v-for="film in films" :key="film.id" :item="film" class="w270" />
     </article>
@@ -105,15 +102,20 @@
       v-if="this.films.length > 0"
       class="d-flex w-100 overflow-hidden justify-content-center mt-3 gap-2"
     >
-      <button class="btn btn-outline-primary" @click="this.currentPage = 1">
+      <button aria-label="pagination" class="btn btn-outline-primary" @click="this.currentPage = 1">
         {{ '<<' }}
       </button>
 
-      <button class="btn btn-outline-primary" @click="this.currentPage -= 1">
+      <button
+        aria-label="pagination"
+        class="btn btn-outline-primary"
+        @click="this.currentPage -= 1"
+      >
         {{ '<' }}
       </button>
 
       <button
+        aria-label="pagination"
         v-if="currentPage !== 1"
         class="btn btn-outline-primary"
         @click="this.currentPage = 1"
@@ -121,11 +123,16 @@
         {{ 1 }}
       </button>
 
-      <button v-if="![1, 2, 3, 4].includes(currentPage)" class="btn btn-outline-primary">
+      <button
+        aria-label="pagination"
+        v-if="![1, 2, 3, 4].includes(currentPage)"
+        class="btn btn-outline-primary"
+      >
         {{ '...' }}
       </button>
 
       <button
+        aria-label="pagination"
         class="btn btn-outline-primary"
         v-for="btn in buttons"
         :key="btn"
@@ -138,6 +145,7 @@
       </button>
 
       <button
+        aria-label="pagination"
         v-if="
           ![
             this.totalPages,
@@ -152,6 +160,7 @@
       </button>
 
       <button
+        aria-label="pagination"
         v-if="currentPage !== totalPages"
         class="btn btn-outline-primary"
         @click="this.currentPage = this.totalPages"
@@ -159,11 +168,19 @@
         {{ this.totalPages }}
       </button>
 
-      <button class="btn btn-outline-primary" @click="this.currentPage += 1">
+      <button
+        aria-label="pagination"
+        class="btn btn-outline-primary"
+        @click="this.currentPage += 1"
+      >
         {{ '>' }}
       </button>
 
-      <button class="btn btn-outline-primary" @click="this.currentPage = this.totalPages">
+      <button
+        aria-label="pagination"
+        class="btn btn-outline-primary"
+        @click="this.currentPage = this.totalPages"
+      >
         {{ '>>' }}
       </button>
     </div>

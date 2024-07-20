@@ -1,29 +1,41 @@
 <template>
-  <div class="container mainBg p-4 mh100">
+  <div class="container-lg mainBg p-4 mh100">
     <div class="mx-auto d-grid">
       <h2 class="fs-1 fw-bold text-danger">Мои закладки</h2>
 
       <div class="row mb-3">
         <div class="col-6">
-          <label for="">Поиск по названию</label>
+          <label for="search-name">Поиск по названию</label>
           <input
-            id="input-default"
+            type="text"
+            name="search-by-name"
+            id="search-name"
             class="form-control mt-2 bg-dark border-danger text-white"
             v-model="search"
           />
         </div>
 
         <div class="col-3">
-          <label for="">Жанр</label>
-          <select class="form-select mt-2 bg-dark border-danger text-white" v-model="genresInput">
+          <label for="select-genre">Жанр</label>
+          <select
+            name="select-by-genre"
+            id="select-genre"
+            class="form-select mt-2 bg-dark border-danger text-white"
+            v-model="genresInput"
+          >
             <option :value="null">Не выбрано</option>
             <option v-for="option in genres" :key="option" :value="option">{{ option }}</option>
           </select>
         </div>
 
         <div class="col-3">
-          <label for="">Тип</label>
-          <select class="form-select mt-2 bg-dark border-danger text-white" v-model="typeInput">
+          <label for="select-type">Тип</label>
+          <select
+            name="select-by-type"
+            id="select-type"
+            class="form-select mt-2 bg-dark border-danger text-white"
+            v-model="typeInput"
+          >
             <option :value="null">Не выбрано</option>
             <option v-for="option in types" :key="option.value" :value="option.value">
               {{ option.text }}
@@ -32,12 +44,18 @@
         </div>
       </div>
 
-      <article class="row row-gap-3 list253">
-        <FilmCard v-for="film in searchedFilms" :key="film.id" :item="film" class="w253"></FilmCard>
+      <article class="row row-gap-3 list253px">
+        <transition-group name="filmList">
+          <FilmCard v-for="film in searchedFilms" :key="film.id" :item="film" class="w253" />
+        </transition-group>
+
+        <div v-if="isError">
+          <p class="fs-1 text-center">{{ errorMessage }}</p>
+        </div>
 
         <div
           class="mt-5 d-flex flex-row-reverse align-items-center justify-content-center"
-          v-if="searchedFilms.length < 1"
+          v-if="searchedFilms.length < 1 && !isError"
         >
           <p class="fs-1">Ничего не найдено</p>
           <img src="./../assets/404.webp" alt="" />
@@ -56,6 +74,9 @@ import FilmCard from '@/components/FilmCard.vue'
 import { reactive, onMounted, ref, watch, computed } from 'vue'
 import store from '@/stores/index.js'
 import { useHead } from '@unhead/vue'
+
+const isError = ref(false)
+const errorMessage = ref()
 
 const props = defineProps({
   list: String
@@ -129,7 +150,13 @@ var getFilms = async () => {
   let response = await axios(
     `https://api.kinopoisk.dev/v1.4/movie?page=1&limit=250&${listStore[props.list].data.map((el) => `&id=${el}`).join('')}`,
     options['request1']
-  )
+  ).catch((error) => {
+    errorMessage.value = error.response.data.message.replace(
+      "Чтобы получить больше запросов, обновите тариф в боте @kinopoiskdev_bot'",
+      ''
+    )
+    isError.value = true
+  })
 
   films.data = [
     ...films.data,
@@ -192,3 +219,15 @@ onMounted(() => {
   getFilms()
 })
 </script>
+
+<style scoped>
+.filmList-enter-active,
+.filmList-leave-active {
+  transition: all 0.3s ease-out;
+}
+
+.filmList-enter-from,
+.filmList-leave-to {
+  opacity: 0;
+}
+</style>

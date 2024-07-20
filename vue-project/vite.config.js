@@ -10,7 +10,7 @@ import IconsResolve from 'unplugin-icons/resolver'
 export default defineConfig({
   plugins: [
     vue(),
-    vueDevTools(),
+    //vueDevTools(),
     Components({
       resolvers: [IconsResolve()],
       dts: true

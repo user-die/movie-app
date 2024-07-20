@@ -3,9 +3,9 @@
     <FilmsList :filmList="popularFilms.data" title="Популярные" />
     <FilmsList :filmList="mostViewed.data" title="Самые просматриваемые" />
     <FilmsList v-if="!props.isSeries" :filmList="inCinema.data" title="Сейчас в кино" />
-    <FilmsList :filmList="latestFilms.data" title="Последние" />
+    <FilmsList v-if="!props.isSeries" :filmList="latestFilms.data" title="Последние" />
     <FilmsList :filmList="bestsFilms.data" title="Лучшие" />
-    <FilmsList :filmList="waiting.data" title="Ожидаемые" />
+    <FilmsList v-if="!props.isSeries" :filmList="waiting.data" title="Ожидаемые" />
     <FilmsList :filmList="randomFilms.data" title="Случайные" />
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <article class="list286">
+  <article class="list286px">
     <div class="d-flex align-items-center text-decoration-none gap-3">
       <h2 class="text-white m-0">{{ title }}</h2>
       <button
@@ -8,6 +8,7 @@
             toggle = !toggle
           }
         "
+        aria-label="collapse or expand content"
         class="btn bg-dark border-danger text-danger"
       >
         <ChevronRight v-if="toggle" /> <ChevronDown v-else />

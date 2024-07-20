@@ -12,12 +12,5 @@ const head = createHead()
 
 createApp(App).use(createPinia()).use(router).use(head).use(UnheadPlugin).mount('#app')
 
-// Починить роли актёров
-// Добавить трейлер к фильмам
 // Ошибки при запросе
 // Шрифт
-// Оптимизация
-// Сменить style на class
-// Адаптивность
-
-// Готовы:

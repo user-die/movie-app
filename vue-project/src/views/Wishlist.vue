@@ -69,7 +69,7 @@
 
 <script setup>
 import axios from 'axios'
-import options from './../options.json'
+import options from './../options.js'
 import FilmCard from '@/components/FilmCard.vue'
 import { reactive, onMounted, ref, watch, computed } from 'vue'
 import store from '@/stores/index.js'

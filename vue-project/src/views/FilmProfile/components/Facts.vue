@@ -62,7 +62,7 @@
 
 <script setup>
 import axios from 'axios'
-import options from '../../../options.json'
+import options from '../../../options.js'
 import ChevronRight from '~icons/bi/chevron-right'
 import ChevronDown from '~icons/bi/chevron-down'
 import { onMounted, reactive, ref, watch } from 'vue'

@@ -48,7 +48,7 @@
 <script setup>
 import axios from 'axios'
 import { onMounted, reactive, ref, watch } from 'vue'
-import options from '../options.json'
+import options from '../options.js'
 import FilmCard from '@/components/FilmCard.vue'
 import { useHead } from '@unhead/vue'
 

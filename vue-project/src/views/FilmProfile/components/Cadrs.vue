@@ -16,7 +16,7 @@
 
 <script setup>
 import axios from 'axios'
-import options from '../../../options.json'
+import options from '../../../options.js'
 import { onMounted, reactive, watch } from 'vue'
 import Carousel from '@/components/Carousel.vue'
 

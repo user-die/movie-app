@@ -33,7 +33,7 @@
 import axios from 'axios'
 import { onMounted, reactive, watch, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import options from '../../options.json'
+import options from '../../options.js'
 import About from './components/About.vue'
 import Roles from './components/Roles.vue'
 import Facts from './components/Facts.vue'

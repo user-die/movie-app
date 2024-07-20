@@ -6,7 +6,7 @@
 
 <script setup>
 import axios from 'axios'
-import options from '@/options.json'
+import options from '@/options.js'
 import { onMounted, reactive, watch } from 'vue'
 
 const props = defineProps({

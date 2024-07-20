@@ -66,7 +66,7 @@
 import axios from 'axios'
 import { onMounted, reactive, watch, ref, computed } from 'vue'
 import { useRoute } from 'vue-router'
-import options from '../../options.json'
+import options from '../../options.js'
 import Staff from './components/Staff.vue'
 import Cadrs from './components/Cadrs.vue'
 import About from './components/About.vue'

@@ -15,7 +15,7 @@ import axios from 'axios'
 import { useRoute } from 'vue-router'
 import { computed, onMounted, reactive, watch } from 'vue'
 import FilmsList from '@/components/FilmsList.vue'
-import options from '../options.json'
+import options from '../options.js'
 import { useHead } from '@unhead/vue'
 
 const route = useRoute()

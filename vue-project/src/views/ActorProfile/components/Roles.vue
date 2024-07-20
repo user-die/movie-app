@@ -39,7 +39,7 @@
 
 <script setup>
 import axios from 'axios'
-import options from '@/options.json'
+import options from '@/options.js'
 import ChevronRight from '~icons/bi/chevron-right'
 import ChevronDown from '~icons/bi/chevron-down'
 import OtherFilms from '@/views/FilmProfile/components/OtherFilms.vue'

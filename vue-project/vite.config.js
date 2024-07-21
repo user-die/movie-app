@@ -26,9 +26,9 @@ export default defineConfig({
     }
   },
   define: {
-    KEY1: process.env.KEY1,
-    KEY2: process.env.VITE_VERCEL_KEY2,
-    KEY3: process.env.VERCEL_KEY2,
-    KEY4: process.env.VITE_KEY2
+    KEY1: JSON.stringify(process.env.KEY1),
+    KEY2: JSON.stringify(process.env.VITE_VERCEL_KEY2),
+    KEY3: JSON.stringify(process.env.VERCEL_KEY2),
+    KEY4: JSON.stringify(process.env.VITE_KEY2)
   }
 })

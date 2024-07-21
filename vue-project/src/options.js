@@ -1,4 +1,5 @@
-console.log(__APP_ENV__)
+console.log(KEY1)
+console.log(KEY2)
 
 export default {
   request1: {

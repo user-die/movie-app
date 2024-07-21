@@ -5,12 +5,10 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import Icons from 'unplugin-icons/vite'
 import Components from 'unplugin-vue-components/vite'
 import IconsResolve from 'unplugin-icons/resolver'
-import vercel from 'vite-plugin-vercel'
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
-    vercel,
     vue(),
     //vueDevTools(),
     Components({

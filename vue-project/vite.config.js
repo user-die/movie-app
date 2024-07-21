@@ -24,5 +24,9 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  define: {
+    KEY1: process.env.VITE_VERCEL_KEY1,
+    KEY2: process.env.VITE_VERCEL_KEY2
   }
 })

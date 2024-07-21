@@ -26,7 +26,6 @@ export default defineConfig({
     }
   },
   define: {
-    KEY1: process.env.VITE_VERCEL_KEY1,
-    KEY2: process.env.VITE_VERCEL_KEY2
+    __APP_ENV__: process.env.VITE_VERCEL_ENV
   }
 })

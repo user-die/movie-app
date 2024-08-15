@@ -2,13 +2,13 @@
   <button
     aria-label="Add to favorites"
     @click="(event) => click(props.id, event)"
-    class="btn border-danger"
-    :class="(item && 'bg-danger text-white') || 'bg-outline-danger text-danger'"
+    class="btn d-flex align-items-center gap-1"
+    :class="(item && 'btn') || 'outline '"
   >
     {{ props.text }}
-    <Bookmarks v-if="props.type === 1" :class="(item && 'text-dark') || 'text-danger'" />
-    <BookmarksStar v-if="props.type === 2" :class="(item && 'text-dark') || 'text-danger'" />
-    <Heart v-if="props.type === 3" :class="(item && 'text-dark') || 'text-danger'" />
+    <Bookmarks v-if="props.type === 1" />
+    <BookmarksStar v-if="props.type === 2" />
+    <Heart v-if="props.type === 3" />
   </button>
 </template>
 
@@ -36,3 +36,10 @@ var click = function (id, event) {
   item.value ? listStore.deleteWish(id) : listStore.addWish(id)
 }
 </script>
+
+<style scoped>
+.outline {
+  background: none;
+  border: 2px solid #99c8ff;
+}
+</style>

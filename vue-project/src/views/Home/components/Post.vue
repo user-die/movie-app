@@ -2,8 +2,8 @@
   <a
     target="blank"
     :href="post.url"
-    bg-variant="info"
-    class="bg-info p-3 rounded-5 text-decoration-none h400 w400"
+    bg-variant="blue"
+    class="cv bg-blue p-3 rounded-5 text-decoration-none h400 w400"
   >
     <div class="card-body p-0 d-grid h-100 align-content-between">
       <p class="fs-4 text-center text-dark m-0" style="line-height: 30px">{{ post.title }}</p>

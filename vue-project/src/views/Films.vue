@@ -8,6 +8,64 @@
     <FilmsList v-if="!props.isSeries" :filmList="waiting.data" title="Ожидаемые" />
     <FilmsList :filmList="randomFilms.data" title="Случайные" />
   </div>
+
+  <!-- 
+   <nav class="localNav">
+      <ul>
+        <li>
+          <a href="#about" :class="{ activeLink: hash === '#about' }">О фильме</a>
+        </li>
+
+        <li v-if="data?.description">
+          <a href="#description" :class="{ activeLink: hash === '#description' }">Описание</a>
+        </li>
+
+        <li v-if="data?.watchability?.items.length > 0">
+          <a href="#watch" :class="{ activeLink: intersection.watch }">Где посмотреть</a>
+        </li>
+
+        <li v-if="data?.persons">
+          <a href="#actors" :class="{ activeLink: intersection.actors }">Актёры</a>
+        </li>
+
+        <li v-if="data?.persons">
+          <a href="#staff">Стафф</a>
+        </li>
+
+        <li v-if="data?.persons">
+          <a href="#dubbing">Актёры дубляжа</a>
+        </li>
+
+        <li>
+          <a href="#awards" :class="{ activeLink: hash === '#awards' }">Награды</a>
+        </li>
+
+        <li>
+          <a href="#nominations">Номинации</a>
+        </li>
+
+        <li v-if="data?.sequelsAndPrequels">
+          <a href="#sequals">Другие части</a>
+        </li>
+
+        <li v-if="data?.similarMovies">
+          <a href="#similar">Похожие</a>
+        </li>
+
+        <li>
+          <a href="#cadrs">Кадры</a>
+        </li>
+
+        <li>
+          <a href="#facts">Факты</a>
+        </li>
+
+        <li>
+          <a href="#errors">Ошибки</a>
+        </li>
+      </ul>
+    </nav>
+   -->
 </template>
 
 <script setup>

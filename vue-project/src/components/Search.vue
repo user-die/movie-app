@@ -1,19 +1,14 @@
 <template>
-  <div class="d-flex flex-column w300">
-    <div class="input-button-container rounded-3 border border-danger p-1">
-      <input
-        v-model="search"
-        type="text"
-        placeholder="Введите запрос..."
-        class="text-white text-decoration-none mainBg"
-      />
-      <span class="bg18 p-1">
-        <Search class="text-white" />
-      </span>
-    </div>
+  <div class="d-flex flex-column">
+    <input v-model="search" type="text" placeholder="Найти фильм..." class="form-select search" />
 
     <div class="dropdown w-100">
-      <div class="dropdown-menu w-100 p-2 menu bg-dark" ref="drop" :class="{ 'd-block': show }">
+      <div
+        :style="{ display: show ? 'block' : 'none' }"
+        id="drop"
+        class="dropdown-menu w-100 p-2 menu bg-dark"
+        ref="drop"
+      >
         <p class="text-center fs-4 m-0 text-white">Фильмы и сериалы</p>
         <ul class="list-unstyled">
           <li v-for="film in resultFilms.data.slice(0, 5)" :key="film.id" class="searchItem">
@@ -57,8 +52,8 @@
 <script setup>
 import axios from 'axios'
 import options from '@/options.js'
-import Search from '~icons/bi/search'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
+import { onClickOutside } from '@vueuse/core'
 
 const drop = ref(null)
 const show = ref(false)
@@ -69,6 +64,12 @@ var resultFilms = reactive({
 var resultActors = reactive({
   data: []
 })
+
+function close() {
+  show.value = false
+}
+
+onClickOutside(drop, close)
 
 var getArtistsQuery = async (query) => {
   let response = await axios(
@@ -115,47 +116,25 @@ watch(search, async () => {
   getFilms(search.value)
   getArtistsQuery(search.value)
 })
-
-onMounted(() => {
-  document.addEventListener('click', (e) => {
-    if (!drop.value.contains(e.target)) {
-      show.value = false
-    }
-  })
-})
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@use 'sass:map';
+@import './../assets/styles/style.scss';
+
 .menu {
   height: 600px;
   border-radius: 10px;
   overflow-y: scroll;
 }
 
-.input-button-container {
-  display: flex;
-}
-
-.input-button-container input {
-  flex-grow: 1;
-  border: none;
-  padding: 5px;
-  outline: none;
-}
-
-.input-button-container button {
-  background: #fff;
-  border: none;
-  padding: 5px;
-  cursor: pointer;
+.search {
+  background: url('@/assets/images/search.svg') no-repeat;
+  background-position: 0 4px;
 }
 
 .searchItem:hover {
   background: #333030;
   border-radius: 5px;
-}
-
-.bg18 {
-  background: rgb(18, 18, 18) !important;
 }
 </style>

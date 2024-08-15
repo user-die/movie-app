@@ -1,73 +1,71 @@
 <template>
   <div v-if="isError">
-    <p class="fs-1 text-center">{{ errorMessage }}</p>
+    <p class="fs-1 text-center">{{ error }}</p>
   </div>
 
-  <div v-else :style="backgroundStyles(film?.data?.backdrop?.url?.replace('orig', 'x660'))">
-    <article class="text-white container p-4 bg">
-      <div>
-        <About
-          :film="{
-            poster: film.data?.poster?.url?.replace('orig', 'x390'),
-            id: film.data.id,
-            name: film.data?.name,
-            alternativeName: film.data.alternativeName,
-            shortDescription: film.data?.shortDescription,
-            year: film.data.year,
-            countries: film.data.countries,
-            genres: film.data.genres,
-            budget: film.data.budget,
-            movieLength: film.data.movieLength,
-            fees: film.data.fees,
-            ageRating: film.data.ageRating,
-            premiere: film.data.premiere,
-            rating: film.data.rating,
-            top250: film.data.top250,
-            director: film.data?.persons?.find((el) => el.profession === 'режиссеры').name
-          }"
-        />
-      </div>
+  <main v-if="isFinished" :style="backgroundStyles(data?.backdrop?.url)" class="bg">
+    <article class="text-white container">
+      <About
+        :film="{
+          poster: data?.poster?.url || error?.poster?.url,
+          id: data.id,
+          name: data?.name,
+          alternativeName: data.alternativeName,
+          shortDescription: data?.shortDescription,
+          year: data.year,
+          countries: data.countries,
+          genres: data.genres,
+          budget: data.budget,
+          movieLength: data.movieLength,
+          fees: data.fees,
+          ageRating: data.ageRating,
+          premiere: data.premiere,
+          rating: data.rating,
+          top250: data.top250,
+          director: data?.persons?.find((el) => el.profession === 'режиссеры').name
+        }"
+      />
 
-      <Watch :watch="film.data?.watchability?.items" />
-
-      <section v-if="film.data?.description" class="row my-4">
-        <h2 class="text-danger fs-1 fw-bold">Описание</h2>
-        <p class="fs-4">{{ film.data?.description }}</p>
+      <section v-if="data?.description" class="my-3" id="description">
+        <h2 class="fs-5 fw-bold text-blue mb-3">Описание</h2>
+        <p class="fs-4">{{ data?.description }}</p>
       </section>
 
-      <Staff :staff="actors" text="Актёры" />
+      <Watch
+        id="watch"
+        v-if="data?.watchability?.items.length > 0"
+        :watch="data?.watchability?.items"
+      />
 
-      <Staff :staff="mainStaff" text="Над фильмом работали" />
+      <OtherFilms
+        id="sequels"
+        v-if="data?.sequelsAndPrequels"
+        :films="data?.sequelsAndPrequels"
+        text="Другие части"
+      />
 
-      <Staff :staff="dubbingActors" text="Актёры дубляжа" />
+      <OtherFilms
+        id="similar"
+        v-if="data?.similarMovies"
+        :films="data?.similarMovies"
+        text="Похожие фильмы"
+      />
+
+      <Persons :persons="data?.persons" />
 
       <Awards :id="id" />
 
       <Cadrs :id="id" />
 
-      <OtherFilms
-        v-if="film.data.sequelsAndPrequels"
-        :films="film.data.sequelsAndPrequels"
-        text="Другие части"
-      />
-
-      <OtherFilms
-        v-if="film.data.similarMovies"
-        :films="film.data.similarMovies"
-        text="Похожие фильмы"
-      />
-
-      <Facts text="Интересные факты" :id="film.data.id" />
+      <Facts text="Интересные факты" :id="id" />
     </article>
-  </div>
+  </main>
 </template>
 
 <script setup>
-import axios from 'axios'
-import { onMounted, reactive, watch, ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
-import options from '../../options.js'
-import Staff from './components/Staff.vue'
+import { ref, computed, onMounted } from 'vue'
+import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import Persons from './components/Persons.vue'
 import Cadrs from './components/Cadrs.vue'
 import About from './components/About.vue'
 import OtherFilms from './components/OtherFilms.vue'
@@ -75,93 +73,49 @@ import Facts from './components/Facts.vue'
 import Watch from './components/Watch.vue'
 import Awards from './components/Awards.vue'
 import { useHead } from '@unhead/vue'
-
-const isError = ref(false)
-const errorMessage = ref()
+import useFetch from '@/fetch.js'
 
 const route = useRoute()
-var id = ref(route.params.id)
-var film = reactive({
-  data: {}
-})
+var id = ref(Number(route.params.id))
 
-var actors = computed(() => film?.data?.persons?.filter((el) => el.profession === 'актеры'))
-var staff = computed(() => film?.data?.persons?.filter((el) => el.profession !== 'актеры'))
+var url = computed(() => `movie/${id.value}`)
 
-var dubbingActors = computed(() => staff?.value?.filter((el) => el.profession === 'актеры дубляжа'))
+const { data, isFinished, error, isError, execute } = useFetch(url, {
+  refetch: true
+}).json()
 
-var sorderStaff = computed(() =>
-  staff?.value
-    ?.filter((el) => el.profession !== 'актеры дубляжа')
-    .reduce((acc, el) => {
-      acc[el.name] = acc[el.name] || { name: el.name, id: el.id, photo: el.photo, professions: [] }
-      acc[el.name].professions.push(el.profession)
-      return acc
-    }, {})
-)
-
-var mainStaff = computed(
-  () =>
-    sorderStaff.value &&
-    Object.fromEntries(
-      Object.entries(sorderStaff?.value).sort(
-        (a, b) => b[1].professions.length - a[1].professions.length
-      )
-    )
-)
+if (isFinished) {
+  console.log(execute())
+}
 
 var backgroundStyles = (img) => {
+  var a = img.replace('orig', 'x660')
   return {
-    background: `linear-gradient(rgba(33, 37, 41, 0.8) 0%, rgba(33, 37, 41, 0.8)), url(${img})`,
+    background: `linear-gradient(rgba(33, 37, 41, 0.8) 0%, rgba(33, 37, 41, 0.8)),  url(${a})`,
     'background-repeat': 'no-repeat',
-    'background-size': '100%',
-    'background-attachment': 'fixed'
+    'background-size': 'cover',
+    'background-attachment': 'fixed',
+    'background-position': '50% 50%'
   }
 }
 
-var getFilm = async (id) => {
-  let response = await axios(
-    `https://api.kinopoisk.dev/v1.4/movie/${id}`,
-    options['request1']
-  ).catch((error) => {
-    errorMessage.value = error.response.data.message.replace(
-      "Чтобы получить больше запросов, обновите тариф в боте @kinopoiskdev_bot'",
-      ''
-    )
-    isError.value = true
-  })
-
-  film.data = response.data
-}
+// 30 40 60 70 80 330 660 700 900
 
 useHead({
-  title: computed(() => film?.data?.name || film?.data?.alternativeName),
+  title: computed(() => data?.value?.name || data?.value?.alternativeName),
   meta: [
     {
       name: 'description',
       content: computed(
         () =>
-          film?.data?.name ||
-          film?.data?.alternativeName +
-            '. Информация о фильме: актёры, режиссёр, продюссеры, стаф, кадры, бюджет, хронометраж, сиквелы и приквелы, похожие фильмы, где посмотреть, интересные факты, ошибки и ляпы'
+          data?.value?.name +
+          '. Информация о фильме: актёры, режиссёр, продюссеры, стаф, кадры, бюджет, хронометраж, сиквелы и приквелы, похожие фильмы, где посмотреть, интересные факты, ошибки и ляпы'
       )
     }
   ]
 })
 
-watch(route, (newValue) => {
-  id.value = newValue.params.id
-
-  getFilm(newValue.params.id)
-})
-
-onMounted(() => {
-  getFilm(id.value)
+onBeforeRouteUpdate((updageGuard) => {
+  id.value = Number(updageGuard.params.id)
 })
 </script>
-
-<style scoped>
-.bg {
-  background: rgba(18, 18, 18, 0.6);
-}
-</style>

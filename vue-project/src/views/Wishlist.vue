@@ -1,16 +1,33 @@
 <template>
-  <div class="container-lg mainBg p-4 mh100">
+  <div class="container-lg p-4 mh100">
     <div class="mx-auto d-grid">
-      <h2 class="fs-1 fw-bold text-danger">Мои закладки</h2>
+      <div class="d-flex justify-content-between">
+        <h1 class="fs-5 fw-bold text-blue">
+          {{ props.list === 'wishlist' ? 'Мои закладки' : 'Избранное' }}
+        </h1>
 
-      <div class="row mb-3">
-        <div class="col-6">
+        <div>
+          <button class="btn" :class="typeList && 'notActiveBtn'" @click="() => (typeList = false)">
+            <Grid />
+          </button>
+          <button
+            class="btn ml-2"
+            @click="() => (typeList = true)"
+            :class="!typeList && 'notActiveBtn'"
+          >
+            <List />
+          </button>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between my-3">
+        <div class="col-5">
           <label for="search-name">Поиск по названию</label>
           <input
             type="text"
             name="search-by-name"
             id="search-name"
-            class="form-control mt-2 bg-dark border-danger text-white"
+            class="form-control mt-2"
             v-model="search"
           />
         </div>
@@ -20,7 +37,7 @@
           <select
             name="select-by-genre"
             id="select-genre"
-            class="form-select mt-2 bg-dark border-danger text-white"
+            class="form-select mt-2"
             v-model="genresInput"
           >
             <option :value="null">Не выбрано</option>
@@ -33,7 +50,7 @@
           <select
             name="select-by-type"
             id="select-type"
-            class="form-select mt-2 bg-dark border-danger text-white"
+            class="form-select mt-2"
             v-model="typeInput"
           >
             <option :value="null">Не выбрано</option>
@@ -44,21 +61,21 @@
         </div>
       </div>
 
-      <article class="row row-gap-3 list253px">
+      <article class="row row-gap-3 list253px mt-2">
         <transition-group name="filmList">
           <FilmCard v-for="film in searchedFilms" :key="film.id" :item="film" class="w253" />
         </transition-group>
 
         <div v-if="isError">
-          <p class="fs-1 text-center">{{ errorMessage }}</p>
+          <p class="fs-1 text-center">{{ error }}</p>
         </div>
 
         <div
           class="mt-5 d-flex flex-row-reverse align-items-center justify-content-center"
-          v-if="searchedFilms.length < 1 && !isError"
+          v-if="searchedFilms?.length < 1 && !isError"
         >
           <p class="fs-1">Ничего не найдено</p>
-          <img src="./../assets/404.webp" alt="" />
+          <img src="./../assets/images/404.webp" alt="" />
         </div>
       </article>
     </div>
@@ -68,15 +85,13 @@
 </template>
 
 <script setup>
-import axios from 'axios'
-import options from './../options.js'
 import FilmCard from '@/components/FilmCard.vue'
-import { reactive, onMounted, ref, watch, computed } from 'vue'
+import { ref, computed } from 'vue'
 import store from '@/stores/index.js'
 import { useHead } from '@unhead/vue'
-
-const isError = ref(false)
-const errorMessage = ref()
+import useFetch from '@/fetch.js'
+import List from '~icons/bi/list'
+import Grid from '~icons/bi/grid-3x3-gap-fill/'
 
 const props = defineProps({
   list: String
@@ -95,11 +110,39 @@ useHead({
   ]
 })
 
-var listStore = store[props.list]()
+var typeList = ref(false)
 
-const films = reactive({
-  data: []
-})
+var listStore = computed(() => store[props.list]())
+
+var url = computed(() =>
+  listStore.value[props.list].data.length === 0
+    ? ''
+    : `movie?page=1&limit=250&${listStore.value[props.list].data.map((el) => `&id=${el}`).join('')}`
+)
+
+const { data, isFinished, error, isError } = useFetch(url, {
+  refetch: true
+}).json()
+
+var mappedData = computed(() =>
+  url.value === ''
+    ? []
+    : data?.value?.docs?.map(
+        (element) =>
+          (element = {
+            id: element.id,
+            name: element.name,
+            image: element?.poster?.url?.replace('orig', 'x390'),
+            year: element.year,
+            type: element.type,
+            genres: element?.genres?.map((el) => el.name),
+            rating: {
+              kp: element?.rating?.kp,
+              imdb: element?.rating?.imdb
+            }
+          })
+      )
+)
 
 var search = ref('')
 var typeInput = ref(null)
@@ -146,78 +189,23 @@ var genres = [
   'Церемония'
 ]
 
-var getFilms = async () => {
-  let response = await axios(
-    `https://api.kinopoisk.dev/v1.4/movie?page=1&limit=250&${listStore[props.list].data.map((el) => `&id=${el}`).join('')}`,
-    options['request1']
-  ).catch((error) => {
-    errorMessage.value = error.response.data.message.replace(
-      "Чтобы получить больше запросов, обновите тариф в боте @kinopoiskdev_bot'",
-      ''
-    )
-    isError.value = true
-  })
-
-  films.data = [
-    ...films.data,
-    ...response.data.docs.map(
-      (element) =>
-        (element = {
-          id: element.id,
-          name: element.name,
-          image: element?.poster?.url?.replace('orig', 'x390'),
-          year: element.year,
-          type: element.type,
-          genres: element?.genres?.map((el) => el.name),
-          rating: {
-            kp: element?.rating?.kp,
-            imdb: element?.rating?.imdb
-          }
-        })
-    )
-  ]
-}
-
 const filteredFilmsByGenre = computed(() =>
   genresInput.value === null
-    ? films.data
-    : films.data.filter((el) => el.genres.includes(genresInput?.value?.toLowerCase()))
+    ? mappedData.value
+    : mappedData.value.filter((el) => el?.genres?.includes(genresInput?.value?.toLowerCase()))
 )
 
 const filteredFilmsByType = computed(() =>
   typeInput.value === null
-    ? filteredFilmsByGenre.value
-    : filteredFilmsByGenre.value.filter((el) => el.type == typeInput.value)
+    ? filteredFilmsByGenre?.value
+    : filteredFilmsByGenre?.value?.filter((el) => el.type == typeInput.value)
 )
 
 const searchedFilms = computed(() =>
-  filteredFilmsByType.value.filter((film) =>
-    film.name.toLowerCase().includes(search.value.toLowerCase())
+  filteredFilmsByType?.value?.filter((film) =>
+    film?.name?.toLowerCase()?.includes(search?.value?.toLowerCase())
   )
 )
-
-watch(
-  listStore[props.list],
-  (newValue, oldValue) => {
-    if (newValue.data.length > oldValue.data.length) getFilms()
-    else films.data = films.data.filter((el) => newValue.data.includes(el.id))
-  },
-  { deep: true }
-)
-
-watch(
-  props,
-  (newValue) => {
-    listStore = store[newValue.list]()
-    films.data = []
-    getFilms()
-  },
-  { deep: true }
-)
-
-onMounted(() => {
-  getFilms()
-})
 </script>
 
 <style scoped>
@@ -229,5 +217,10 @@ onMounted(() => {
 .filmList-enter-from,
 .filmList-leave-to {
   opacity: 0;
+}
+
+.notActiveBtn {
+  background-color: white;
+  color: #99c8ff;
 }
 </style>

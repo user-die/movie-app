@@ -1,26 +1,17 @@
 <template>
-  <section class="w-100 row my-4 gap-3">
-    <div class="w-100 d-flex gap-3 col-12">
-      <h2 class="m-0 text-danger fs-1 fw-bold">{{ props.text }}</h2>
-
-      <button
-        @click="
-          () => {
-            actorsToggle = !actorsToggle
-          }
-        "
-        class="btn btn-outline-danger"
-      >
-        <ChevronRight v-if="!actorsToggle" />
-        <ChevronDown v-else />
-      </button>
-    </div>
+  <section class="w-100 my-3">
+    <openListButton
+      :text="props.text"
+      :length="props.staff.length"
+      :toggle="toggle"
+      @toggleList="() => (toggle = !toggle)"
+    />
 
     <div
       :class="{
-        'flex-wrap': actorsToggle,
-        'overflow-hidden': !actorsToggle,
-        'd-flex row-gap-0 align-items-start p-0 column-gap-2 m-auto list128px': true
+        'flex-wrap': toggle,
+        'overflow-hidden': !toggle,
+        'd-flex row-gap-0 align-items-start p-0 column-gap-2 cv list128px': true
       }"
     >
       <router-link
@@ -30,9 +21,13 @@
         :to="'/actor/' + actor.id"
       >
         <img
-          :src="`https://image.openmoviedb.com/kinopoisk-st-images//actor_iphone/iphone90_${actor.id}.jpg`"
+          v-lazy="
+            `https://image.openmoviedb.com/kinopoisk-st-images//actor_iphone/iphone90_${actor.id}.jpg`
+          "
           alt="Портрет актёра"
           class="actorsImage rounded-4"
+          height="143"
+          width="90"
         />
         <p class="m-0 w120">{{ actor.name }}</p>
         <p v-if="actor?.description">{{ actor?.description }}</p>
@@ -47,11 +42,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import ChevronRight from '~icons/bi/chevron-right'
-import ChevronDown from '~icons/bi/chevron-down'
-import altImage from '@/assets/alt.png'
-
-var actorsToggle = ref(false)
+let toggle = ref(false)
 
 const props = defineProps({
   staff: Object,

@@ -11,12 +11,14 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@vueuse/components": "^10.11.0",
     "@vueuse/core": "^10.11.0",
     "@vueuse/head": "^2.0.0",
     "axios": "^1.7.2",
-    "bootstrap": "^5.3.3",
+    "https-proxy-agent": "^7.0.5",
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
+    "vue-lazyload": "^3.0.0",
     "vue-meta": "^2.4.0",
     "vue-router": "^4.3.3"
   },

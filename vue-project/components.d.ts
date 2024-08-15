@@ -11,6 +11,7 @@ declare module 'vue' {
     FilmCard: typeof import('./src/components/FilmCard.vue')['default']
     FilmsList: typeof import('./src/components/FilmsList.vue')['default']
     Navbar: typeof import('./src/components/Navbar.vue')['default']
+    OpenListButton: typeof import('./src/components/openListButton.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Search: typeof import('./src/components/Search.vue')['default']

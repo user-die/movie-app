@@ -1,32 +1,19 @@
 <template>
-  <article class="mt-4" v-if="props?.movies?.length > 0">
-    <OtherFilms
-      v-if="films?.data"
-      :films="films?.data.sort((a, b) => b.year - a.year)"
-      text="Фильмы и сериалы"
+  <section class="mt-4" v-if="isFinished">
+    <OtherFilms :films="data?.docs?.sort((a, b) => b?.year - a?.year)" text="Фильмы и сериалы" />
+
+    <openListButton
+      text="Участие в проектах"
+      :length="data?.docs?.length"
+      :toggle="toggle"
+      @toggleList="() => (toggle = !toggle)"
     />
-
-    <div class="w-100 d-flex gap-3 col-12 mb-2">
-      <h2 class="text-danger m-0 fs-1 fw-bold">Участие в проектах</h2>
-
-      <button
-        @click="
-          () => {
-            rolesToggle = !rolesToggle
-          }
-        "
-        class="btn btn-outline-danger"
-      >
-        <ChevronRight v-if="rolesToggle" />
-        <ChevronDown v-else />
-      </button>
-    </div>
 
     <ul
       class="d-flex flex-wrap overflow-hidden align-items-start ps-4 m-0 justify-content-between"
-      :style="{ maxHeight: rolesToggle ? '250px' : '100%' }"
+      :style="{ maxHeight: toggle ? '250px' : '100%' }"
     >
-      <li v-for="movie in films.data" :key="movie.id" class="p-0 role">
+      <li v-for="movie in data?.docs" :key="movie.id" class="p-0 role">
         <router-link :to="'/movie/' + movie.id" class="text-decoration-none text-white"
           >{{ movie.name || movie.alternativeName }}
 
@@ -34,51 +21,26 @@
         </router-link>
       </li>
     </ul>
-  </article>
+  </section>
 </template>
 
 <script setup>
-import axios from 'axios'
-import options from '@/options.js'
-import ChevronRight from '~icons/bi/chevron-right'
-import ChevronDown from '~icons/bi/chevron-down'
+import openListButton from '@/components/openListButton.vue'
 import OtherFilms from '@/views/FilmProfile/components/OtherFilms.vue'
-import { onMounted, reactive, ref, watch } from 'vue'
+import { computed, ref } from 'vue'
+import useFetch from '@/fetch'
 
-var rolesToggle = ref(true)
-
-var films = reactive({
-  data: []
-})
+var toggle = ref(true)
 
 const props = defineProps({
   movies: Array
 })
 
-var getFilms = async (array) => {
-  let response = await axios(
-    `https://api.kinopoisk.dev/v1.4/movie?page=1&limit=20&${array?.map((el) => `&id=${el}`).join('')}`,
-    options['request1']
-  )
+let url = computed(() => 'movie?page=1&limit=250' + props.movies.map((el) => `&id=${el}`).join(''))
 
-  films.data = response.data.docs.map(
-    (element) =>
-      (element = {
-        id: element.id,
-        name: element.name || element.alternativeName,
-        image: element?.poster?.url?.replace('orig', 'x120') || '',
-        year: element.year
-      })
-  )
-}
-
-watch(props, async (newValue) => {
-  getFilms(newValue.movies)
-})
-
-onMounted(() => {
-  getFilms(props.movies)
-})
+const { data, isFinished, error, isError } = useFetch(url, {
+  refetch: true
+}).json()
 </script>
 
 <style scoped>

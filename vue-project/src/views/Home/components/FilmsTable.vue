@@ -1,12 +1,12 @@
 <template>
-  <section class="d-flex flex-column align-items-center p-0 my-3">
-    <h2 class="text-danger fs-1" style="width: round(down, 100%, 366px)">{{ title }}</h2>
+  <section class="cv d-flex flex-column align-items-center p-0 my-3">
+    <h2 class="text-danger fs-5" style="width: round(down, 100%, 366px)">{{ title }}</h2>
     <article class="d-grid align-items-start justify-content-center gap-3 grid">
       <router-link
         :to="'movie/' + film.id"
         v-for="film in films"
         :key="film.id"
-        class="d-grid film rounded-3 bg-primary p-1 text-decoration-none text-dark"
+        class="cv d-grid film rounded-3 bg-primary p-1 text-decoration-none text-dark"
       >
         <img
           :src="`https://st.kp.yandex.net/images/film_iphone/iphone90_${film.id}.jpg`"

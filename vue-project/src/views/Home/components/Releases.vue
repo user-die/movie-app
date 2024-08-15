@@ -1,5 +1,5 @@
 <template>
-  <article class="text-danger">
+  <article class="cv text-danger">
     <FilmsTable :films="lastReleases" title="Новинки месяца" />
 
     <FilmsTable :films="comingSoon" title="Скоро выйдут" />

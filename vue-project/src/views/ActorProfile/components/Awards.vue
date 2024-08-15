@@ -1,26 +1,17 @@
 <template>
-  <article v-if="awards?.length > 0">
-    <div class="w-100 mb-2 mt-4 d-flex gap-3">
-      <h2 class="text-danger m-0 fs-1 fw-bold">{{ props.text }}</h2>
-
-      <button
-        @click="
-          () => {
-            awardsToggle = !awardsToggle
-          }
-        "
-        class="btn btn-outline-danger"
-      >
-        <ChevronRight v-if="awardsToggle" />
-        <ChevronDown v-else />
-      </button>
-    </div>
+  <section v-if="winnings">
+    <openListButton
+      text="Награды"
+      :length="winnings.length"
+      :toggle="awardsToggle"
+      @toggleList="() => (awardsToggle = !awardsToggle)"
+    />
 
     <ul
       class="d-flex flex-column overflow-hidden align-items-start ps-4 m-0"
       :style="{ maxHeight: awardsToggle ? '200px' : '100%' }"
     >
-      <li v-for="award in props.awards" :key="award?.nomination?.title">
+      <li v-for="award in winnings" :key="award.nomination?.title">
         {{ award?.nomination?.award?.title }}, {{ award?.nomination?.award?.year }} -
         {{ award?.nomination?.title }}
         <router-link
@@ -32,18 +23,77 @@
         </router-link>
       </li>
     </ul>
-  </article>
+  </section>
+
+  <section v-if="nominations">
+    <openListButton
+      text="Награды"
+      :length="nominations.length"
+      :toggle="nominationToggle"
+      @toggleList="() => (nominationToggle = !nominationToggle)"
+    />
+
+    <ul
+      class="d-flex flex-column overflow-hidden align-items-start ps-4 m-0"
+      :style="{ maxHeight: nominationToggle ? '200px' : '100%' }"
+    >
+      <li v-for="award in nominations" :key="award?.nomination?.title">
+        {{ award?.nomination?.award?.title }}, {{ award?.nomination?.award?.year }} -
+        {{ award?.nomination?.title }}
+        <router-link
+          v-if="award?.movie?.name"
+          :to="'/movie/' + award?.movie?.id"
+          class="text-secondary text-decoration-none"
+        >
+          {{ ', ' + award?.movie?.name }}
+        </router-link>
+      </li>
+    </ul>
+  </section>
 </template>
 
 <script setup>
-import ChevronRight from '~icons/bi/chevron-right'
-import ChevronDown from '~icons/bi/chevron-down'
-import { ref } from 'vue'
+import useFetch from '@/fetch'
+import { ref, computed } from 'vue'
+import openListButton from '@/components/openListButton.vue'
 
 var awardsToggle = ref(true)
+var nominationToggle = ref(true)
 
 const props = defineProps({
-  awards: Array,
-  text: String
+  id: Number
 })
+
+var url = computed(() => `person/awards?page=1&limit=250&personId=${props.id}`)
+
+const { data, isFinished, error, isError } = useFetch(url, {
+  refetch: true
+}).json()
+
+var winnings = computed(() =>
+  data?.value?.docs?.filter(
+    (el, index, arr) =>
+      el.winning === true &&
+      index ===
+        arr.findIndex(
+          (t) =>
+            t.nomination.title === el.nomination.title &&
+            t.nomination.award.title === el.nomination.award.title &&
+            t.nomination.award.year === el.nomination.award.year
+        )
+  )
+)
+var nominations = computed(() =>
+  data?.value?.docs?.filter(
+    (el, index, arr) =>
+      el.winning !== true &&
+      index ===
+        arr.findIndex(
+          (t) =>
+            t.nomination.title === el.nomination.title &&
+            t.nomination.award.title === el.nomination.award.title &&
+            t.nomination.award.year === el.nomination.award.year
+        )
+  )
+)
 </script>

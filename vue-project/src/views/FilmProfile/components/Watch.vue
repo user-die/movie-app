@@ -1,17 +1,17 @@
 <template>
-  <section v-if="props.watch">
-    <h2 class="text-danger fs-1">Где посмотреть</h2>
+  <section v-if="props.watch" class="my-3">
+    <h2 class="text-danger fs-5 text-blue mb-3">Где посмотреть</h2>
 
-    <div class="d-flex gap-2 align-items-normal">
+    <div class="d-flex flex-wrap gap-4 align-items-normal">
       <a
         v-for="item in props.watch"
         :key="'/' + item.name"
         :href="item.url"
         target="_blank"
-        class="d-flex flex-column gap-2 align-items-center text-decoration-none text-white"
+        class="watchItem"
       >
         <img :src="item.logo?.url?.replace('orig', 'x60')" alt="@/assets/alt.png" width="60px" />
-        <span class="w90 text-center">{{ item.name }}</span>
+        <span>{{ item.name }}</span>
       </a>
     </div>
   </section>
@@ -22,3 +22,20 @@ const props = defineProps({
   watch: Array
 })
 </script>
+
+<style scoped>
+.watchItem {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+  text-decoration: none;
+  color: #cbd0d4;
+
+  span {
+    width: 60px;
+    text-align: center;
+    word-break: break-all;
+  }
+}
+</style>

@@ -1,6 +1,4 @@
-Демонстрационная (не финальная) версия!
-
-Stack: Vue3, Pinia, Bootstrap, Axios, Kinopoisk Api
+Stack: Vue3, Pinia, Axios, Kinopoisk Api
 
 Kinopoisk Api имеет ограничение в 200 запросов в день. После преодаление этого порога приложение будет работать некорректно.
 

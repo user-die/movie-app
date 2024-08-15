@@ -1,6 +1,6 @@
 <template>
-  <section class="mx-auto my-3 d-grid">
-    <h2 class="fs-1 text-danger">Подобрать фильм</h2>
+  <section class="cv mx-auto my-3 d-grid">
+    <h2 class="fs-5 text-danger">Подобрать фильм</h2>
 
     <div class="row mb-3">
       <div class="col-2">

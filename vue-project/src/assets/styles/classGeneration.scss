@@ -1,0 +1,141 @@
+$height: (36, 250, 400, 832);
+
+@mixin height($height) {
+  @each $h in $height {
+    .h#{$h} {
+      height: $h + px !important;
+    }
+  }
+}
+
+@include height($height);
+
+$width: (40, 90, 120, 170, 253, 270, 300, 400);
+
+@mixin width($width) {
+  @each $w in $width {
+    .w#{$w} {
+      width: $w + px !important;
+    }
+  }
+}
+
+@include width($width);
+
+$list: (128px, 136px, 253px, 286px);
+
+@mixin list($list) {
+  @each $list in $list {
+    .list#{$list} {
+      width: round(down, 100%, $list);
+      justify-self: center;
+    }
+  }
+}
+
+@include list($list);
+
+$cols: (2, 3, 5, 6, 7, 12);
+
+@mixin col($cols) {
+  @each $col in $cols {
+    .col-#{$col} {
+      flex: 0 0 auto;
+      width: 100% / 12 * $col;
+    }
+  }
+}
+
+@include col($cols);
+
+@mixin gaps($sizes) {
+  @each $key, $size in $sizes {
+    .gap-#{$key} {
+      gap: $size;
+    }
+  }
+}
+
+@mixin rounded($sizes) {
+  @each $key, $size in $sizes {
+    .rounded-#{$key} {
+      border-radius: $size;
+    }
+  }
+}
+
+@mixin paddings($sizes) {
+  @each $key, $size in $sizes {
+    .p-#{$key} {
+      padding: $size;
+    }
+  }
+}
+
+@mixin margins($sizes) {
+  @each $key, $size in $sizes {
+    .m-#{$key} {
+      margin: $size;
+    }
+  }
+}
+
+@mixin marginsT($sizes) {
+  @each $key, $size in $sizes {
+    .mt-#{$key} {
+      margin-top: $size;
+    }
+  }
+}
+
+@mixin marginsB($sizes) {
+  @each $key, $size in $sizes {
+    .mt-#{$key} {
+      margin-bottom: $size;
+    }
+  }
+}
+
+@mixin fontSizes($sizes) {
+  @each $key, $size in $sizes {
+    .fs-#{$key} {
+      font-size: $size;
+    }
+  }
+}
+
+@include gaps($sizes);
+@include rounded($sizes);
+@include paddings($sizes);
+@include margins($sizes);
+@include marginsT($sizes);
+@include marginsB($sizes);
+@include fontSizes($sizes);
+
+@mixin backgrounds($colors) {
+  @each $key, $color in $colors {
+    .bg-#{$key} {
+      background-color: $color;
+    }
+  }
+}
+
+@mixin textColors($colors) {
+  @each $key, $color in $colors {
+    .text-#{$key} {
+      color: $color;
+    }
+  }
+}
+
+@mixin borders($colors) {
+  @each $key, $color in $colors {
+    .border-#{$key} {
+      border: 2px solid $color;
+    }
+  }
+}
+
+@include borders($colors);
+@include backgrounds($colors);
+@include textColors($colors);

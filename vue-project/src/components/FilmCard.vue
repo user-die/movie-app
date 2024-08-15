@@ -1,9 +1,6 @@
 <template>
   <router-link :to="'/movie/' + item?.id" class="text-decoration-none text-white">
-    <article
-      class="card rounded-5 bg-light-subtle h400"
-      :style="backgroundStyles(item.image || altImage)"
-    >
+    <article class="cv card rounded-4 h400" :style="backgroundStyles(item.image)">
       <div
         class="card-body h-100 d-grid gap-2 align-items-center justify-content-between justify-items-center align-content-between text-white"
       >
@@ -21,12 +18,12 @@
         <div>
           <article class="d-flex gap-3 align-items-start justify-content-evenly">
             <section v-if="item?.rating?.imdb" class="d-flex flex-column align-items-center">
-              <img src="./../assets/imdb.png" class="w-75" alt="@/assets/alt.png" />
+              <img src="./../assets/images/imdb.png" class="w-75" alt="иконка imdb" />
               <p class="text-warning m-0">{{ item.rating?.imdb }}</p>
             </section>
 
             <section v-if="item?.rating?.kp" class="d-flex flex-column align-items-center">
-              <img src="./../assets/kp.png" class="w-75" alt="@/assets/alt.png" />
+              <img src="./../assets/images/kp.png" class="w-75" alt="иконка imdb" />
               <p class="text-warning m-0">{{ item.rating?.kp.toFixed(1) }}</p>
             </section>
 
@@ -41,7 +38,6 @@
 </template>
 
 <script setup>
-import altImage from '@/assets/alt.png'
 import WishlistButton from './WishlistButton.vue'
 
 var backgroundStyles = (img) => {

@@ -5,7 +5,7 @@
     </button>
 
     <section style="width: calc(-16px + round(down, 100%, 416px))">
-      <h2 class="text-danger fs-1">Последние новости</h2>
+      <h2 class="text-danger fs-5">Последние новости</h2>
       <article class="d-flex flex-wrap flex-column overflow-hidden gap-3 h400" ref="carousel">
         <Post
           v-for="post in posts"

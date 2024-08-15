@@ -1,34 +1,33 @@
-@font-face {
-  font-family: Nunito;
-  src: url('./Nunito-Regular.ttf');
-}
+@use 'sass:map';
 
 @font-face {
-  font-family: Anton;
-  src: url('./Anton-Regular.ttf');
+  font-family: AROne;
+  src: url('./../AROne.ttf');
 }
+
+//background: linear-gradient(45deg, #13547a, #80d0c7);
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
-  font-family: Nunito, sans-serif;
+  font-family: AROnek, sans-serif;
+}
+
+body {
+  background-color: #171620;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html,
 body,
 #app {
   height: 100%;
-  font-family: Nunito, sans-serif;
+
   color: white;
-}
-
-h2 {
-  font-family: Nunito;
-}
-
-h1 {
-  font-family: Anton, sans-serif;
 }
 
 ::-webkit-scrollbar {
@@ -38,7 +37,7 @@ h1 {
 
 ::-webkit-scrollbar-thumb {
   border-radius: 10px;
-  background-color: #dc3545;
+  background-color: map.get($colors, 'red');
 }
 
 ::-webkit-scrollbar-track {
@@ -56,27 +55,4 @@ h1 {
 .form-control::-ms-input-placeholder {
   /* Microsoft Edge */
   color: white !important;
-}
-
-.mainBg {
-  background: rgb(18, 18, 18);
-}
-
-.mh {
-  min-height: 100vh;
-}
-
-/*
-.navlist {
-
-  width: calc(-16px + round(down, 100%, 186px));
-}
-*/
-
-.object-fit-cover {
-  object-fit: cover;
-}
-
-.mh100 {
-  min-height: 100vh;
 }

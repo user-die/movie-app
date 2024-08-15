@@ -1,132 +1,67 @@
 <template>
   <div v-if="isError">
-    <p class="fs-1 text-center">{{ errorMessage }}</p>
+    <p class="fs-1 text-center">{{ error }}</p>
   </div>
 
-  <article v-else class="text-white container mainBg p-4">
+  <article v-if="isFinished" class="text-white container mainBg p-4">
     <div class="row gap-2">
-      <img :src="actor.data.photo || altImage" :alt="altImage" class="rounded-5 w300" />
+      <img :src="data?.photo || altImage" :alt="altImage" class="rounded-5 w300" />
 
-      <About :actor="actor?.data" class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8 col-xxl-9" />
+      <About :actor="data" class="col-12 col-sm-12 col-md-7 col-lg-7 col-xl-8 col-xxl-9" />
     </div>
 
     <article class="d-flex flex-column gap-4 mx-4">
       <Roles
         :movies="
-          actor?.data?.movies
+          data?.movies
             ?.filter((el) => el.enProfession === 'actor')
             .sort((a, b) => b.rating - a.rating)
             .reduce((acc, el) => (acc = [...acc, el.id]), [])
         "
       />
 
-      <Awards :awards="winnings" text="Награды" />
+      <Awards :id="id" />
 
-      <Awards :awards="nominations" text="Номинации" />
-
-      <Facts :facts="actor.data?.facts" />
+      <Facts :facts="data?.facts" />
     </article>
   </article>
 </template>
 
 <script setup>
-import axios from 'axios'
-import { onMounted, reactive, watch, ref, computed } from 'vue'
-import { useRoute } from 'vue-router'
-import options from '../../options.js'
+import { onBeforeRouteUpdate, useRoute } from 'vue-router'
+import { onMounted, ref, computed } from 'vue'
 import About from './components/About.vue'
 import Roles from './components/Roles.vue'
 import Facts from './components/Facts.vue'
 import Awards from './components/Awards.vue'
 import { useHead } from '@unhead/vue'
-import altImage from '@/assets/alt.png'
+import altImage from '@/assets/images/alt.png'
+import useFetch from '@/fetch.js'
 
-const isError = ref(false)
-const errorMessage = ref()
+const route = useRoute()
+var id = ref(route.params.id)
 
-var actor = reactive({
-  data: {}
-})
+var url = computed(() => `/person/${id.value}`)
+
+const { data, isFinished, error, isError } = useFetch(url, {
+  refetch: true
+}).json()
 
 useHead({
-  title: computed(() => actor.data.name || actor.data.enName),
+  title: computed(() => data?.value?.name || data?.value?.enName),
   meta: [
     {
       name: 'description',
       content: computed(
         () =>
-          actor.data.name +
+          data?.value?.name +
           '. Информация об актёре / актрисе: рост, дата рождения, место рождения, всего фильмов. участие в фильмах и сериалах, награды, интересные факты'
       )
     }
   ]
 })
 
-const route = useRoute()
-var id = ref(route.params.id)
-
-var awards = reactive({})
-
-var winnings = computed(() =>
-  awards?.data?.filter(
-    (el, index, arr) =>
-      el.winning === true &&
-      index ===
-        arr.findIndex(
-          (t) =>
-            t.nomination.title === el.nomination.title &&
-            t.nomination.award.title === el.nomination.award.title &&
-            t.nomination.award.year === el.nomination.award.year
-        )
-  )
-)
-var nominations = computed(() =>
-  awards?.data?.filter(
-    (el, index, arr) =>
-      el.winning !== true &&
-      index ===
-        arr.findIndex(
-          (t) =>
-            t.nomination.title === el.nomination.title &&
-            t.nomination.award.title === el.nomination.award.title &&
-            t.nomination.award.year === el.nomination.award.year
-        )
-  )
-)
-
-var getActor = async (id) => {
-  let response = await axios(
-    `https://api.kinopoisk.dev/v1.4/person/${id}`,
-    options['request1']
-  ).catch((error) => {
-    errorMessage.value = error.response.data.message.replace(
-      "Чтобы получить больше запросов, обновите тариф в боте @kinopoiskdev_bot'",
-      ''
-    )
-    isError.value = true
-  })
-
-  actor.data = response.data
-}
-
-var getAwards = async (id) => {
-  let response = await axios(
-    `https://api.kinopoisk.dev/v1.4/person/awards?page=1&limit=250&personId=${id}`,
-    options['request1']
-  )
-
-  awards.data = response.data.docs
-}
-
-watch(route, (newValue) => {
-  id.value = newValue.params.id
-
-  getActor(newValue.params.id)
-  getAwards(newValue.params.id)
-})
-
-onMounted(() => {
-  getActor(id.value)
-  getAwards(id.value)
+onBeforeRouteUpdate((updageGuard) => {
+  id.value = updageGuard.params.id
 })
 </script>

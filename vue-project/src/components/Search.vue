@@ -130,7 +130,7 @@ watch(search, async () => {
 
 .search {
   background: url('@/assets/images/search.svg') no-repeat;
-  background-position: 0 4px;
+  background-position: 190px 8px;
 }
 
 .searchItem:hover {
